@@ -1,4 +1,10 @@
 /* Final shared fixes for readable copy, full hero footage and complete work previews. */
+@media(min-width:1101px) {
+  body .site-header .header-shell {grid-template-columns:190px minmax(0,1fr) auto!important;column-gap:24px!important;}
+  body .site-header .desktop-nav {justify-content:center!important;gap:clamp(14px,1.7vw,30px)!important;}
+  body .site-header .desktop-nav a {white-space:nowrap;}
+  body .site-header .header-actions {width:max-content!important;min-width:0!important;}
+}
 body .hero > video.hero-video {inset:0!important;width:100%!important;height:100%!important;object-fit:cover!important;transform:scale(1.04)!important;}
 body.about-page .about-ref-hero > video.about-hero-bg-video,
 body.contact-page .contact-ref-hero > video.about-hero-bg-video {
