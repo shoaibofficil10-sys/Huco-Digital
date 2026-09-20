@@ -1,6 +1,6 @@
 /* Final shared fixes for readable copy, full hero footage and complete work previews. */
 body .hero > video.hero-video {inset:0!important;width:100%!important;height:100%!important;object-fit:cover!important;transform:scale(1.04)!important;}
-body .about-ref-hero > video.about-hero-bg-video,
+body.about-page .about-ref-hero > video.about-hero-bg-video,
 body.contact-page .contact-ref-hero > video.about-hero-bg-video {
   position:absolute!important;inset:0!important;width:100%!important;height:100%!important;
   max-width:none!important;min-width:100%!important;min-height:100%!important;
@@ -78,7 +78,7 @@ body .huco-editorial-copy h2 {text-wrap:balance;}
 }
 @media(max-width:600px) {
   body .site-header .menu-toggle {background:transparent!important;border:1px solid currentColor!important;}
-  body .about-ref-hero > video.about-hero-bg-video,body.contact-page .contact-ref-hero > video.about-hero-bg-video {object-position:82% center!important;}
+  body.about-page .about-ref-hero > video.about-hero-bg-video,body.contact-page .contact-ref-hero > video.about-hero-bg-video {object-position:82% center!important;}
   #work .portfolio-scroll-slide {grid-template-columns:minmax(0,1fr)!important;}
   body.contact-page .contact-ref-hero .about-ref-copy h1,body.about-page .about-ref-hero .about-ref-copy h1 {font-size:clamp(40px,10.7vw,60px)!important;}
   body.contact-page .contact-ref-hero .about-ref-copy p,body.about-page .about-ref-hero .about-ref-copy p {font-size:15px!important;}
