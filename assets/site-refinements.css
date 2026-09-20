@@ -39,15 +39,14 @@ body .huco-editorial-copy h2 {text-wrap:balance;}
 .form-email-result {grid-column:1/-1;margin-top:20px;padding:18px;background:#f3f2ef;color:#111;border-radius:12px;font-size:14px;line-height:1.6;}
 .form-email-result a {display:inline-flex;margin-top:10px;padding:10px 15px;background:#c2272e;color:#fff;border-radius:6px;font-weight:600;}
 
-/* The complete image and its caption occupy separate rows: no crops or overlays. */
-#work .portfolio-shot {display:grid!important;grid-template-columns:minmax(0,1fr)!important;grid-template-rows:minmax(0,1fr) 34px!important;place-content:stretch!important;position:relative!important;min-width:0!important;min-height:0!important;margin:0!important;aspect-ratio:auto!important;background:#ece9e3!important;}
-#work .portfolio-shot::before,#work .portfolio-shot::after {display:none!important;}
-#work .portfolio-shot img,#work .portfolio-shot:hover img {display:block!important;position:static!important;min-width:0!important;min-height:0!important;width:100%!important;height:100%!important;object-fit:contain!important;object-position:center!important;transform:none!important;filter:none!important;background:#ece9e3!important;}
-#work .portfolio-shot span {position:static!important;inset:auto!important;margin:0!important;min-height:34px!important;height:34px!important;padding:0 12px!important;border:0!important;border-radius:0!important;background:#171717!important;backdrop-filter:none!important;z-index:1!important;font-size:9px!important;}
-#work .portfolio-shot span::after {display:none!important;}
+/* Campaign and studio images keep their full composition above a separate caption. */
+#work .portfolio-scroll-slide:not(.portfolio-web-grid) .portfolio-shot {display:grid!important;grid-template-columns:minmax(0,1fr)!important;grid-template-rows:minmax(0,1fr) 34px!important;place-content:stretch!important;position:relative!important;min-width:0!important;min-height:0!important;margin:0!important;aspect-ratio:auto!important;background:#ece9e3!important;}
+#work .portfolio-scroll-slide:not(.portfolio-web-grid) .portfolio-shot::before,#work .portfolio-scroll-slide:not(.portfolio-web-grid) .portfolio-shot::after {display:none!important;}
+#work .portfolio-scroll-slide:not(.portfolio-web-grid) .portfolio-shot img,#work .portfolio-scroll-slide:not(.portfolio-web-grid) .portfolio-shot:hover img {display:block!important;position:static!important;min-width:0!important;min-height:0!important;width:100%!important;height:100%!important;object-fit:contain!important;object-position:center!important;transform:none!important;filter:none!important;background:#ece9e3!important;}
+#work .portfolio-scroll-slide:not(.portfolio-web-grid) .portfolio-shot span {position:static!important;inset:auto!important;margin:0!important;min-height:34px!important;height:34px!important;padding:0 12px!important;border:0!important;border-radius:0!important;background:#171717!important;backdrop-filter:none!important;z-index:1!important;font-size:9px!important;}
+#work .portfolio-scroll-slide:not(.portfolio-web-grid) .portfolio-shot span::after {display:none!important;}
 #work .portfolio-scroll-slide::before {display:none!important;}
 #work .portfolio-scroll-brand {display:none!important;}
-#work .portfolio-web-grid .portfolio-shot:nth-child(n+5) {display:grid!important;}
 #work .portfolio-scroll-copy h3 {font-size:clamp(30px,2.8vw,46px)!important;line-height:1.08!important;}
 #work .portfolio-scroll-copy p {font-size:14px!important;line-height:1.6!important;}
 #work .portfolio-scroll-index {font-size:64px!important;line-height:1!important;margin:0 0 18px!important;}
@@ -61,8 +60,8 @@ body .huco-editorial-copy h2 {text-wrap:balance;}
   #work .portfolio-scroll-visuals {height:100%!important;padding:18px 54px 18px 18px!important;}
   #work .portfolio-scroll-track {height:100%!important;position:relative!important;}
   #work .portfolio-scroll-slide {position:absolute!important;inset:0!important;height:100%!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;grid-template-rows:repeat(2,minmax(0,1fr))!important;align-content:stretch!important;}
-  #work .portfolio-scroll-slide.portfolio-web-grid {grid-template-rows:repeat(3,minmax(0,1fr))!important;}
-  #work .portfolio-shot {height:100%!important;}
+  #work .portfolio-scroll-slide.portfolio-web-grid {grid-template-rows:repeat(2,auto)!important;align-content:center!important;}
+  #work .portfolio-scroll-slide:not(.portfolio-web-grid) .portfolio-shot {height:100%!important;}
   #work .portfolio-scroll-progress {left:35%!important;}
 }
 @media(max-width:1100px) {
@@ -75,8 +74,8 @@ body .huco-editorial-copy h2 {text-wrap:balance;}
   #work .portfolio-scroll-track {height:auto!important;transform:none!important;}
   #work .portfolio-scroll-slide {display:none!important;position:relative!important;inset:auto!important;height:auto!important;transform:none!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;grid-template-rows:none!important;grid-auto-rows:auto!important;}
   #work .portfolio-scroll-slide.is-active {display:grid!important;opacity:1!important;visibility:visible!important;}
-  #work .portfolio-shot {height:auto!important;grid-template-rows:auto 34px!important;}
-  #work .portfolio-shot img {height:auto!important;aspect-ratio:var(--shot-aspect,auto)!important;}
+  #work .portfolio-scroll-slide:not(.portfolio-web-grid) .portfolio-shot {height:auto!important;grid-template-rows:auto 34px!important;}
+  #work .portfolio-scroll-slide:not(.portfolio-web-grid) .portfolio-shot img {height:auto!important;aspect-ratio:var(--shot-aspect,auto)!important;}
   #work .portfolio-scroll-brand,#work .portfolio-vertical-label,#work .portfolio-scroll-rail,#work .portfolio-scroll-progress {display:none!important;}
   body .about-ref-hero {height:auto!important;min-height:100svh!important;}
   body.contact-page .contact-ref-hero .about-ref-inner,body.about-page .about-ref-hero .about-ref-inner {min-height:100svh!important;padding:130px 28px 60px!important;}
@@ -105,3 +104,15 @@ body .huco-editorial-copy h2 {text-wrap:balance;}
 /* Keep the menu control legible over both light headers and hero footage. */
 body .site-header #menuToggle {background:#fff!important;color:#171717!important;border:1px solid #dedede!important;}
 body .site-header #menuToggle span {background:#171717!important;}
+
+/* Restore the original large website previews and their inset caption overlays. */
+#work .portfolio-web-grid .portfolio-shot {height:auto!important;aspect-ratio:1600 / 1151!important;}
+#work .portfolio-web-grid .portfolio-shot img {width:100%!important;height:100%!important;object-fit:contain!important;transform:none!important;}
+@media(min-width:1101px) {
+  #work .portfolio-web-grid .portfolio-shot:nth-child(n+5) {display:none!important;}
+}
+
+/* Keep the approach subtitle and its red rule together in the copy flow. */
+body .huco-editorial-copy::before {content:none!important;display:none!important;}
+body .huco-editorial-kicker {position:relative!important;display:flex!important;align-items:center!important;gap:14px!important;margin:0 0 18px!important;padding:0!important;line-height:1.5!important;}
+body .huco-editorial-kicker::before {content:""!important;position:static!important;inset:auto!important;display:block!important;flex:0 0 28px!important;width:28px!important;height:2px!important;background:#d5222a!important;transform:none!important;}
