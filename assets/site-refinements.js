@@ -57,7 +57,16 @@
       message.textContent = 'Your email draft is ready. Open it in your email app and send it to hello@hucodigital.com to submit your brief.';
       const link = document.createElement('a');
       link.href = `mailto:hello@hucodigital.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-      link.textContent = 'Open email draft ↗';
+      link.textContent = 'Open email draft';
+      const icon = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+      icon.setAttribute('class', 'huco-icon');
+      icon.setAttribute('viewBox', '0 0 24 24');
+      icon.setAttribute('aria-hidden', 'true');
+      icon.setAttribute('focusable', 'false');
+      const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      path.setAttribute('d', 'M6 18 18 6M6 6h12v12');
+      icon.append(path);
+      link.append(icon);
       result.append(message, link);
     });
   });

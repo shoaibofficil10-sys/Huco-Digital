@@ -704,7 +704,7 @@ const revealObserver=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.
   let active = 0;
   const renderSubs = (items) => {
     if (!subsWrap) return;
-    subsWrap.innerHTML = items.map((item,i) => `<a href="${item[1]}"><span>${String(i+1).padStart(2,'0')}</span>${item[0]}<i>↗</i></a>`).join('');
+    subsWrap.innerHTML = items.map((item,i) => `<a href="${item[1]}"><span>${String(i+1).padStart(2,'0')}</span>${item[0]}<i><svg class="huco-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 18 18 6M6 6h12v12"/></svg></i></a>`).join('');
     if (count) count.textContent = `${String(items.length).padStart(2,'0')} services`;
   };
   const setActive = (index) => {
