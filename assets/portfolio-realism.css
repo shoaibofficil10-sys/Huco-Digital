@@ -1,46 +1,160 @@
-/* Preserve the full square compositions within the existing portfolio cards. */
-#selected-work.portfolio-realism .pm40-media-pad {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+/* Shared service portfolio: square frames with an inset-to-edge reveal. */
+#selected-work.portfolio-realism {
+  padding: 0 !important;
+  scroll-margin-top: 104px;
+}
+#selected-work.portfolio-realism .pm40-case,
+#selected-work.portfolio-realism .pm40-case.reverse {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+  min-height: 0 !important;
+}
+#selected-work.portfolio-realism .pm40-copy {
+  min-width: 0;
+  min-height: 0;
+  padding: clamp(22px, 2.5vw, 48px) !important;
+}
+#selected-work.portfolio-realism .pm40-copy h3 {
+  font-size: clamp(28px, 2.65vw, 48px) !important;
+  line-height: 1.08 !important;
+  margin: 20px 0 16px !important;
+  overflow-wrap: normal;
+}
+#selected-work.portfolio-realism .pm40-copy p {
+  font-size: clamp(15px, 1.05vw, 18px) !important;
+  line-height: 1.55 !important;
+  margin-bottom: 24px;
+}
+#selected-work.portfolio-realism .pm42-outcome {
+  padding-top: 18px;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+#selected-work.portfolio-realism .pm42-outcome strong {
+  font-size: 13px;
+}
+#selected-work.portfolio-realism .pm40-media {
+  position: relative;
+  width: 100% !important;
+  min-width: 0;
+  min-height: 0 !important;
+  height: auto !important;
+  padding: 0 !important;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
   background: #ebe9e5;
+}
+#selected-work.portfolio-realism .pm40-media-pad {
+  position: absolute !important;
+  inset: 9%;
+  display: block;
+  width: auto !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none;
+  aspect-ratio: auto !important;
+  border-radius: 0 !important;
+  overflow: hidden;
+  transition: inset .55s cubic-bezier(.22, .8, .2, 1);
 }
 #selected-work.portfolio-realism .pm40-media-pad picture {
   display: block;
   width: 100%;
-  max-height: 100%;
-  aspect-ratio: 1 / 1;
+  height: 100%;
+  max-height: none;
+  aspect-ratio: auto;
 }
 #selected-work.portfolio-realism .pm40-media img {
+  display: block;
   width: 100% !important;
   height: 100% !important;
-  object-fit: contain !important;
-  aspect-ratio: 1 / 1 !important;
+  max-width: none;
+  object-fit: cover !important;
+  object-position: center;
+  aspect-ratio: auto !important;
+  transform: none !important;
+  filter: none !important;
+}
+@media (hover: hover) and (pointer: fine) {
+  #selected-work.portfolio-realism .pm40-case:hover .pm40-media-pad {
+    inset: 0;
+  }
+}
+#selected-work.portfolio-realism .pm40-case:focus-within .pm40-media-pad {
+  inset: 0;
+}
+#selected-work.portfolio-realism .pm40-arrow:focus-visible {
+  outline: 2px solid #c2272e;
+  outline-offset: 4px;
+}
+#selected-work.portfolio-realism .portfolio-note {
+  margin: 0;
+  padding: 20px 28px;
+  color: #666;
+  font-size: 12px;
+  line-height: 1.5;
+}
+@media (max-width: 1100px) {
+  #selected-work.portfolio-realism {
+    display: block !important;
+  }
+  #selected-work.portfolio-realism .pm40-side {
+    border-right: 0;
+    border-bottom: 1px solid #c8c6c2;
+    background: #f3f2ef !important;
+    color: #111 !important;
+  }
+  #selected-work.portfolio-realism .pm40-side-inner {
+    position: relative !important;
+    top: auto !important;
+    min-height: 0 !important;
+    height: auto !important;
+    padding: 38px 28px !important;
+    gap: 28px;
+  }
+  #selected-work.portfolio-realism .pm40-side-main {
+    margin: 0 !important;
+    padding: 0;
+  }
+  #selected-work.portfolio-realism .pm40-side-main h2 {
+    font-size: clamp(44px, 6vw, 68px) !important;
+    line-height: 1 !important;
+    overflow-wrap: normal;
+  }
+  #selected-work.portfolio-realism .pm40-side-main p {
+    max-width: 600px !important;
+    font-size: 15px !important;
+  }
+  #selected-work.portfolio-realism .pm40-side-bottom {
+    display: none !important;
+  }
 }
 @media (max-width: 900px) {
+  #selected-work.portfolio-realism {
+    scroll-margin-top: 76px;
+  }
+  #selected-work.portfolio-realism .pm40-cases {
+    display: block !important;
+  }
   #selected-work.portfolio-realism .pm40-case,
   #selected-work.portfolio-realism .pm40-case.reverse {
     grid-template-columns: minmax(0, 1fr) !important;
   }
-  #selected-work.portfolio-realism .pm40-copy,
-  #selected-work.portfolio-realism .pm40-media {
-    min-width: 0;
-    order: initial !important;
+  #selected-work.portfolio-realism .pm40-case .pm40-media {
+    order: 0 !important;
   }
-  #selected-work.portfolio-realism .pm40-case.reverse .pm40-copy {
-    border-left: 0 !important;
+  #selected-work.portfolio-realism .pm40-case .pm40-copy {
+    order: 1 !important;
+    padding: 28px !important;
+    border: 0 !important;
+    border-top: 1px solid #c8c6c2 !important;
   }
-  #selected-work.portfolio-realism .pm40-media {
-    height: auto !important;
-    min-height: 0 !important;
-    padding: 20px;
+  #selected-work.portfolio-realism .pm40-copy h3 {
+    font-size: clamp(30px, 5.5vw, 44px) !important;
   }
+}
+@media (prefers-reduced-motion: reduce) {
   #selected-work.portfolio-realism .pm40-media-pad {
-    position: relative !important;
-    inset: auto !important;
-    width: 100% !important;
-    height: auto !important;
-    min-height: 0 !important;
-    aspect-ratio: 1 / 1 !important;
+    transition: none;
   }
 }
