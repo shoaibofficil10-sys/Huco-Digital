@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 920">
+<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#18362f"/><stop offset="1" stop-color="#5f826e"/></linearGradient><radialGradient id="r" cx="55%" cy="25%" r="75%"><stop stop-color="#fff" stop-opacity=".18"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient></defs>
+<rect width="720" height="920" rx="36" fill="#101b18"/><rect width="720" height="920" rx="36" fill="url(#g)" opacity=".72"/><rect width="720" height="920" rx="36" fill="url(#r)"/>
+<circle cx="360" cy="352" r="142" fill="#c99172"/><path d="M218 351c0-130 71-213 169-213 100 0 160 78 160 188-47-48-115-73-202-64-50 5-93 35-127 89Z" fill="#111111"/>
+<path d="M182 920c12-229 74-344 178-344 105 0 170 115 180 344Z" fill="#111"/><path d="M263 590c22 46 55 70 98 70 46 0 79-24 99-70v112H263Z" fill="#c99172"/>
+<circle cx="310" cy="360" r="8" fill="#171717"/><circle cx="414" cy="360" r="8" fill="#171717"/><path d="M333 431c21 13 40 13 59 0" fill="none" stroke="#6d3a31" stroke-width="8" stroke-linecap="round"/>
+<path d="M95 760h530" stroke="#fff" opacity=".13"/><text x="56" y="70" font-family="Arial,sans-serif" font-size="30" fill="#fff" opacity=".72">HUCO / PEOPLE</text><text x="565" y="865" font-family="Arial,sans-serif" font-weight="700" font-size="74" fill="#fff" opacity=".15">O</text>
+</svg>

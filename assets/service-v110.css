@@ -1,0 +1,29 @@
+
+/* V110 portfolio end-boundary correction */
+@media(min-width:981px){
+  body.service-landing-page .pm40-portfolio{
+    position:relative!important;
+    overflow:visible!important;
+  }
+
+  body.service-landing-page .pm40-side{
+    position:relative!important;
+    height:100%!important;
+    min-height:100%!important;
+    align-self:stretch!important;
+    overflow:hidden!important;
+  }
+
+  body.service-landing-page .pm40-side-inner.v109-fixed{
+    position:fixed!important;
+    bottom:auto!important;
+  }
+
+  body.service-landing-page .pm40-side-inner.v109-bottom{
+    position:absolute!important;
+    top:auto!important;
+    bottom:0!important;
+    left:0!important;
+    width:100%!important;
+  }
+}

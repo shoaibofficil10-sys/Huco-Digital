@@ -1,0 +1,108 @@
+
+/* V104 refinement for editorial service process section */
+
+.huco-editorial-process-v103{
+  padding-top:64px!important;
+  padding-bottom:64px!important;
+}
+
+.huco-editorial-main{
+  grid-template-columns:minmax(390px,42%) minmax(0,58%)!important;
+  min-height:520px!important;
+}
+
+.huco-editorial-copy{
+  padding-top:64px!important;
+  padding-bottom:64px!important;
+  padding-right:54px!important;
+}
+
+.huco-editorial-copy h2{
+  max-width:610px!important;
+  font-size:clamp(34px,3.15vw,49px)!important;
+  line-height:1.01!important;
+  letter-spacing:-.05em!important;
+  margin-bottom:18px!important;
+}
+
+.huco-editorial-copy p{
+  max-width:520px!important;
+  margin-bottom:28px!important;
+}
+
+.huco-editorial-image{
+  min-height:520px!important;
+}
+
+.huco-editorial-strip{
+  margin-top:0!important;
+}
+
+@media(max-width:1100px){
+  .huco-editorial-main{
+    grid-template-columns:minmax(350px,44%) minmax(0,56%)!important;
+    min-height:490px!important;
+  }
+  .huco-editorial-copy{
+    padding-top:52px!important;
+    padding-bottom:52px!important;
+    padding-right:38px!important;
+  }
+  .huco-editorial-copy h2{
+    font-size:40px!important;
+    max-width:520px!important;
+  }
+  .huco-editorial-image{
+    min-height:490px!important;
+  }
+}
+
+@media(max-width:900px){
+  .huco-editorial-process-v103{
+    padding-top:48px!important;
+    padding-bottom:48px!important;
+  }
+  .huco-editorial-main{
+    min-height:450px!important;
+  }
+  .huco-editorial-copy{
+    padding:44px 28px!important;
+  }
+  .huco-editorial-copy h2{
+    font-size:35px!important;
+    line-height:1.02!important;
+  }
+  .huco-editorial-image{
+    min-height:450px!important;
+  }
+}
+
+@media(max-width:650px){
+  .huco-editorial-process-v103{
+    padding-top:38px!important;
+    padding-bottom:38px!important;
+  }
+  .huco-editorial-copy{
+    padding:34px 16px 32px!important;
+  }
+  .huco-editorial-copy h2{
+    max-width:390px!important;
+    font-size:29px!important;
+    line-height:1.04!important;
+    letter-spacing:-.045em!important;
+  }
+  .huco-editorial-image{
+    min-height:330px!important;
+    height:330px!important;
+  }
+}
+
+@media(max-width:350px){
+  .huco-editorial-copy h2{
+    font-size:27px!important;
+  }
+  .huco-editorial-image{
+    min-height:290px!important;
+    height:290px!important;
+  }
+}

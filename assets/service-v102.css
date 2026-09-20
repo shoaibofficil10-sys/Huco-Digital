@@ -1,0 +1,198 @@
+
+/* V102 compact full-width process section. No outer card/container. */
+
+.huco-split-process-v101{
+  padding:72px 0!important;
+  background:#f4f2ee!important;
+  border-top:1px solid #dedad3!important;
+  border-bottom:1px solid #dedad3!important;
+}
+
+.huco-split-process-v101 .huco-split-shell{
+  max-width:none!important;
+  width:100%!important;
+  padding-left:0!important;
+  padding-right:0!important;
+}
+
+.huco-split-process-v101 .huco-split-grid{
+  display:grid!important;
+  grid-template-columns:minmax(0,.88fr) minmax(0,1.12fr)!important;
+  min-height:0!important;
+  height:540px!important;
+  width:100%!important;
+  border:0!important;
+  border-radius:0!important;
+  overflow:hidden!important;
+  background:transparent!important;
+  box-shadow:none!important;
+}
+
+.huco-split-process-v101 .huco-split-copy{
+  padding:46px max(44px,calc((100vw - 1280px)/2 + 28px)) 40px!important;
+  padding-right:54px!important;
+  background:#f4f2ee!important;
+  justify-content:center!important;
+}
+
+.huco-split-process-v101 .huco-split-kicker{
+  margin-bottom:13px!important;
+}
+
+.huco-split-process-v101 .huco-split-copy h2{
+  max-width:570px!important;
+  margin-bottom:14px!important;
+  font-size:clamp(39px,3.8vw,58px)!important;
+  line-height:.95!important;
+}
+
+.huco-split-process-v101 .huco-split-intro{
+  max-width:490px!important;
+  margin-bottom:24px!important;
+  font-size:13px!important;
+  line-height:1.55!important;
+}
+
+.huco-split-process-v101 .huco-split-steps{
+  max-width:590px!important;
+  margin-bottom:20px!important;
+}
+
+.huco-split-process-v101 .huco-split-step{
+  min-height:56px!important;
+  grid-template-columns:30px minmax(0,1fr) 30px!important;
+  gap:10px!important;
+}
+
+.huco-split-process-v101 .huco-split-step strong{
+  font-size:15px!important;
+}
+
+.huco-split-process-v101 .huco-split-step i{
+  width:27px!important;
+  height:27px!important;
+}
+
+.huco-split-process-v101 .huco-split-cta{
+  margin-top:0!important;
+  min-width:170px!important;
+  padding:11px 15px!important;
+  font-size:10px!important;
+}
+
+.huco-split-process-v101 .huco-split-visual{
+  min-height:0!important;
+  height:540px!important;
+  border-radius:0!important;
+}
+
+.huco-split-process-v101 .huco-split-frame{
+  inset:18px!important;
+  border-radius:14px!important;
+}
+
+.huco-split-process-v101 .huco-split-caption{
+  left:34px!important;
+  right:34px!important;
+  bottom:28px!important;
+}
+
+.huco-split-process-v101 .huco-split-badge{
+  width:86px!important;
+  height:86px!important;
+  top:28px!important;
+  right:30px!important;
+  font-size:7px!important;
+}
+
+/* Tablet */
+@media(max-width:980px){
+  .huco-split-process-v101{
+    padding:54px 0!important;
+  }
+  .huco-split-process-v101 .huco-split-grid{
+    grid-template-columns:1fr 1fr!important;
+    height:500px!important;
+  }
+  .huco-split-process-v101 .huco-split-copy{
+    padding:32px 24px!important;
+  }
+  .huco-split-process-v101 .huco-split-copy h2{
+    font-size:36px!important;
+  }
+  .huco-split-process-v101 .huco-split-intro{
+    font-size:11px!important;
+    margin-bottom:18px!important;
+  }
+  .huco-split-process-v101 .huco-split-step{
+    min-height:50px!important;
+  }
+  .huco-split-process-v101 .huco-split-step strong{
+    font-size:13px!important;
+  }
+  .huco-split-process-v101 .huco-split-visual{
+    height:500px!important;
+  }
+}
+
+/* Mobile, image first, compact text below */
+@media(max-width:700px){
+  .huco-split-process-v101{
+    padding:42px 0!important;
+  }
+  .huco-split-process-v101 .huco-split-grid{
+    display:flex!important;
+    flex-direction:column!important;
+    height:auto!important;
+  }
+  .huco-split-process-v101 .huco-split-visual{
+    order:1!important;
+    width:100%!important;
+    height:330px!important;
+  }
+  .huco-split-process-v101 .huco-split-copy{
+    order:2!important;
+    padding:28px 16px 30px!important;
+  }
+  .huco-split-process-v101 .huco-split-copy h2{
+    font-size:31px!important;
+    max-width:430px!important;
+  }
+  .huco-split-process-v101 .huco-split-intro{
+    max-width:430px!important;
+    font-size:12px!important;
+  }
+  .huco-split-process-v101 .huco-split-steps{
+    max-width:none!important;
+  }
+  .huco-split-process-v101 .huco-split-step{
+    min-height:54px!important;
+  }
+  .huco-split-process-v101 .huco-split-step strong{
+    font-size:14px!important;
+  }
+  .huco-split-process-v101 .huco-split-frame{
+    inset:12px!important;
+  }
+  .huco-split-process-v101 .huco-split-badge{
+    width:72px!important;
+    height:72px!important;
+    top:20px!important;
+    right:20px!important;
+    font-size:6px!important;
+  }
+  .huco-split-process-v101 .huco-split-caption{
+    left:24px!important;
+    right:24px!important;
+    bottom:22px!important;
+  }
+}
+
+@media(max-width:350px){
+  .huco-split-process-v101 .huco-split-visual{
+    height:280px!important;
+  }
+  .huco-split-process-v101 .huco-split-copy h2{
+    font-size:28px!important;
+  }
+}
