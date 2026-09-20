@@ -109,6 +109,7 @@ body .site-header #menuToggle span {background:#171717!important;}
 #work .portfolio-web-grid .portfolio-shot {height:auto!important;aspect-ratio:1600 / 1151!important;}
 #work .portfolio-web-grid .portfolio-shot img {width:100%!important;height:100%!important;object-fit:contain!important;transform:none!important;}
 @media(min-width:1101px) {
+  #work .portfolio-web-grid .portfolio-shot {max-width:calc((max(540px, 100svh - 116px) - 54px) * .69505)!important;justify-self:center!important;}
   #work .portfolio-web-grid .portfolio-shot:nth-child(n+5) {display:none!important;}
 }
 
