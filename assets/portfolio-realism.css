@@ -1,0 +1,46 @@
+/* Preserve the full square compositions within the existing portfolio cards. */
+#selected-work.portfolio-realism .pm40-media-pad {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ebe9e5;
+}
+#selected-work.portfolio-realism .pm40-media-pad picture {
+  display: block;
+  width: 100%;
+  max-height: 100%;
+  aspect-ratio: 1 / 1;
+}
+#selected-work.portfolio-realism .pm40-media img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important;
+  aspect-ratio: 1 / 1 !important;
+}
+@media (max-width: 900px) {
+  #selected-work.portfolio-realism .pm40-case,
+  #selected-work.portfolio-realism .pm40-case.reverse {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+  #selected-work.portfolio-realism .pm40-copy,
+  #selected-work.portfolio-realism .pm40-media {
+    min-width: 0;
+    order: initial !important;
+  }
+  #selected-work.portfolio-realism .pm40-case.reverse .pm40-copy {
+    border-left: 0 !important;
+  }
+  #selected-work.portfolio-realism .pm40-media {
+    height: auto !important;
+    min-height: 0 !important;
+    padding: 20px;
+  }
+  #selected-work.portfolio-realism .pm40-media-pad {
+    position: relative !important;
+    inset: auto !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    aspect-ratio: 1 / 1 !important;
+  }
+}
