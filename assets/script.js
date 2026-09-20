@@ -162,16 +162,17 @@ const revealObserver=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.
       slide.classList.toggle('is-after', n>i);
       slide.setAttribute('aria-hidden', n===i ? 'false' : 'true');
     });
-    nav.forEach((el,n)=>el.classList.toggle('is-active',n===i));
+    nav.forEach((el,n)=>{el.classList.toggle('is-active',n===i);el.setAttribute('aria-pressed',String(n===i));});
     dots.forEach((el,n)=>el.classList.toggle('is-active',n===i));
     const d=slides[i]?.dataset || {};
+    const serviceLink=copy?.querySelector('a'); if(serviceLink && d.href) serviceLink.href=d.href;
     if(copy){copy.classList.remove('is-changing'); void copy.offsetWidth; copy.classList.add('is-changing')}
     Object.entries(fields).forEach(([k,el])=>{if(el) el.textContent=d[k]||''});
   }
 
   function update(){
     raf = 0;
-    if (window.innerWidth <= 900) return;
+    if (window.innerWidth <= 1100) return;
     const rect = story.getBoundingClientRect();
     const range = Math.max(1, story.offsetHeight - window.innerHeight);
     const p = Math.max(0, Math.min(1, -rect.top / range));
@@ -181,7 +182,7 @@ const revealObserver=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.
   }
   function onScroll(){ if(!raf) raf=requestAnimationFrame(update); }
   function goTo(i){
-    if(window.innerWidth<=900){ setActive(i); return; }
+    if(window.innerWidth<=1100){ setActive(i); return; }
     const top = window.scrollY + story.getBoundingClientRect().top;
     const range = Math.max(1, story.offsetHeight-window.innerHeight);
     const target = top + ((i + .08) / slides.length) * range;
