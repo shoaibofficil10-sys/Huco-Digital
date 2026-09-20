@@ -83,7 +83,6 @@ body .huco-editorial-copy h2 {text-wrap:balance;}
   body.contact-page .contact-ref-hero .about-ref-copy h1,body.about-page .about-ref-hero .about-ref-copy h1 {font-size:clamp(42px,7vw,68px)!important;}
 }
 @media(max-width:600px) {
-  body .site-header .menu-toggle {background:transparent!important;border:1px solid currentColor!important;}
   body.about-page .about-ref-hero > video.about-hero-bg-video,body.contact-page .contact-ref-hero > video.about-hero-bg-video {object-position:82% center!important;}
   #work .portfolio-scroll-slide {grid-template-columns:minmax(0,1fr)!important;}
   body.contact-page .contact-ref-hero .about-ref-copy h1,body.about-page .about-ref-hero .about-ref-copy h1 {font-size:clamp(40px,10.7vw,60px)!important;}
@@ -102,3 +101,7 @@ body .huco-editorial-copy h2 {text-wrap:balance;}
 .editorial-link {display:inline-flex;align-items:center;gap:24px;font-size:13px;font-weight:600;color:#171717;border-bottom:1px solid #a5a29b;padding-bottom:8px;}
 @media(max-width:900px){.home-insights-grid{grid-template-columns:1fr;gap:36px;}.home-insight-copy h3{font-size:30px;}}
 @media(prefers-reduced-motion:reduce){.home-insight-image img{transition:none;}}
+
+/* Keep the menu control legible over both light headers and hero footage. */
+body .site-header #menuToggle {background:#fff!important;color:#171717!important;border:1px solid #dedede!important;}
+body .site-header #menuToggle span {background:#171717!important;}
