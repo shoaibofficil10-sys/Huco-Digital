@@ -419,7 +419,8 @@ body[data-theme="dark"] .footer-v21 .footer-insights-link { color:#fff!important
   }
   body.responsive-site .about-ref-stats :is(strong,span),
   body.responsive-site .pm49-stats :is(strong,span) { margin:0!important; max-width:100%!important; text-align:center!important; }
-  body.responsive-site .pm49-stats>div+div { border-left:1px solid rgba(255,255,255,.18); }
+  body.responsive-site .pm49-stats>i { display:none!important; }
+  body.responsive-site .pm49-stats>div:last-child { border-left:1px solid rgba(255,255,255,.18); }
   body.responsive-site .v75-hero { text-align:center!important; }
   body.responsive-site .v75-hero :is(h1,p,.v75-eyebrow),
   body.responsive-site .insights-intro :is(h1,p,.editorial-kicker),
