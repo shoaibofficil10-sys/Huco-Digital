@@ -245,6 +245,8 @@ html { -webkit-text-size-adjust:100%; text-size-adjust:100%; }
 /* Mobile follow-up: framed sections retain a small outer gutter. */
 .process-auto-controls { display:none; }
 .service-mobile-review[hidden] { display:none!important; }
+.footer-v21 .footer-insights-link { color:#111!important; }
+body[data-theme="dark"] .footer-v21 .footer-insights-link { color:#fff!important; }
 .footer-menu > summary { list-style:none; }
 .footer-menu > summary::-webkit-details-marker { display:none; }
 .footer-menu > summary .huco-icon { display:none; }
