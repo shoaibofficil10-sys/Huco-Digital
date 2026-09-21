@@ -306,7 +306,7 @@ html { -webkit-text-size-adjust:100%; text-size-adjust:100%; }
   body.responsive-site .results-v32-copy :is(.eyebrow,h2) { margin:0 0 16px!important; }
   body.responsive-site .results-v32-copy p { margin:0!important; }
   body.responsive-site .results-v32-metrics article {
-    display:grid!important; align-content:start!important; gap:10px!important; min-height:0!important;
+    display:grid!important; grid-template-columns:minmax(0,1fr)!important; justify-content:stretch!important; align-content:start!important; gap:10px!important; min-height:0!important;
     padding:22px 20px!important; transform:none!important;
   }
   body.responsive-site .results-v32-metrics small { position:static!important; inset:auto!important; display:block; margin:0!important; line-height:1.4!important; }
