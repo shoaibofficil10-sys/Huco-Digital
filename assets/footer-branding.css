@@ -60,7 +60,7 @@ body.responsive-site .footer-v21-bottom a:focus-visible { outline:2px solid #c22
   body.responsive-site .footer-v21 .footer-v21-bottom {
     grid-template-columns:minmax(0,1fr) auto!important;
     gap:12px 20px!important;
-    padding:24px 0!important;
+    padding:24px var(--mobile-gutter,16px)!important;
   }
   body.responsive-site .footer-v21-bottom>span { grid-column:1/-1; }
 }
