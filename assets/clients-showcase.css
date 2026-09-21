@@ -25,6 +25,7 @@ body.responsive-site #clients .client-logo-item {
   border:0!important;
   border-right:1px solid #ddd9d3!important;
   border-bottom:1px solid #ddd9d3!important;
+  transform:none!important;
 }
 body.responsive-site #clients .client-logo-item:nth-child(5n) { border-right:0!important; }
 body.responsive-site #clients .client-logo-item:nth-last-child(-n+5) { border-bottom:0!important; }
