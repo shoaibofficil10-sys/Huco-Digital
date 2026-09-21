@@ -71,3 +71,37 @@
     });
   });
 })();
+
+/* Mobile layout enhancements keep the original controls, values and desktop layout. */
+(() => {
+  const mobile = matchMedia('(max-width:980px)');
+  const menus = [...document.querySelectorAll('.footer-menu')];
+  menus.forEach(menu => menu.querySelector('summary').addEventListener('click', event => {
+    if (!mobile.matches) event.preventDefault();
+  }));
+  const hero = document.querySelector('.service-landing-page .pm49-hero');
+  const form = hero?.querySelector('.pm49-form-wrap');
+  let anchor, review;
+  if (form) {
+    anchor = document.createComment('Desktop service form position');
+    form.before(anchor);
+    review = document.createElement('section');
+    review.className = 'service-mobile-review';
+    review.setAttribute('aria-label', 'Request a project review');
+    review.hidden = true;
+    hero.after(review);
+  }
+  function syncLayout() {
+    menus.forEach(menu => { menu.open = !mobile.matches; });
+    if (!form) return;
+    if (mobile.matches) {
+      review.hidden = false;
+      review.append(form);
+    } else {
+      anchor.after(form);
+      review.hidden = true;
+    }
+  }
+  mobile.addEventListener('change', syncLayout);
+  syncLayout();
+})();

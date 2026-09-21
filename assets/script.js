@@ -127,7 +127,7 @@ const revealObserver=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.
     ['LAUNCH','We ship with the details already handled.','QA, tracking, publishing, media setup and launch support are built into the delivery.',['QA','Tracking','Go live']],
     ['IMPROVE','Performance feeds the next creative decision.','We learn from real behaviour, improve the system and keep the work moving after launch.',['Measure','Optimise','Grow']]
   ];
-  const buttons=[...document.querySelectorAll('.process-rail button')], screen=document.querySelector('.process-copy'), orbit=document.querySelector('.process-orbit b'), progress=document.querySelector('.process-progress');
+  const buttons=[...document.querySelectorAll('.process-rail button')].filter(button=>!button.closest('[data-process-scroll]')), screen=document.querySelector('.process-copy'), orbit=document.querySelector('.process-orbit b'), progress=document.querySelector('.process-progress');
   buttons.forEach((b,i)=>b.addEventListener('click',()=>{buttons.forEach(x=>x.classList.remove('active'));b.classList.add('active');const d=data[i];screen.animate([{opacity:.2,transform:'translateY(12px)'},{opacity:1,transform:'none'}],{duration:380});screen.querySelector('small').textContent=d[0];screen.querySelector('h3').textContent=d[1];screen.querySelector('p').textContent=d[2];screen.querySelector('ul').innerHTML=d[3].map(x=>`<li>${x}</li>`).join('');orbit.textContent=String(i+1).padStart(2,'0');progress.style.height=(i/(buttons.length-1)*80)+'%';}));
   const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.querySelectorAll('[data-count]').forEach(el=>{let end=+el.dataset.count,start=0;const t=setInterval(()=>{start+=Math.max(1,Math.ceil(end/40));if(start>=end){start=end;clearInterval(t)}el.textContent=start},28)});obs.unobserve(e.target)}}),{threshold:.35});document.querySelectorAll('.results-v14').forEach(x=>obs.observe(x));
 })();
@@ -316,25 +316,65 @@ const revealObserver=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.
     ['04','LAUNCH','We put the work in front of the right audience.','Campaign setup, tracking, QA and launch are handled with clear ownership and measurable goals.',['Launch','Media','Tracking']],
     ['05','IMPROVE','Performance becomes the next creative brief.','We learn from data, improve weak points and keep iterating across content, media and digital experience.',['Optimise','Learn','Scale']]
   ];
-  let active=-1, locked=false;
-  function show(i){
-    i=Math.max(0,Math.min(data.length-1,i)); if(i===active)return; active=i;
-    section.classList.add('is-changing');
-    buttons.forEach((b,n)=>b.classList.toggle('active',n===i));
-    progress.style.height=((i/(data.length-1))*Math.max(0, section.querySelector('.process-rail').clientHeight-110))+'px';
-    setTimeout(()=>{ const d=data[i]; orbit.textContent=d[0]; screen.querySelector('small').textContent=d[0]+' · '+d[1]; screen.querySelector('h3').textContent=d[2]; screen.querySelector('p').textContent=d[3]; screen.querySelector('ul').innerHTML=d[4].map(x=>'<li>'+x+'</li>').join(''); section.classList.remove('is-changing');},140);
+  const mobile = matchMedia('(max-width:980px)');
+  const reducedMotion = matchMedia('(prefers-reduced-motion:reduce)');
+  const stage = section.querySelector('.process-v30-stage');
+  const playButton = section.querySelector('.process-autoplay');
+  let active = -1, visible = false, paused = reducedMotion.matches, timer = 0;
+  function show(i) {
+    i = (i + data.length) % data.length;
+    if (i === active) return;
+    active = i;
+    const d = data[i];
+    buttons.forEach((button, n) => {
+      button.classList.toggle('active', n === i);
+      button.setAttribute('aria-pressed', String(n === i));
+    });
+    orbit.textContent = d[0];
+    screen.querySelector('small').textContent = d[0] + ' · ' + d[1];
+    screen.querySelector('h3').textContent = d[2];
+    screen.querySelector('p').textContent = d[3];
+    screen.querySelector('ul').replaceChildren(...d[4].map(text => {
+      const item = document.createElement('li'); item.textContent = text; return item;
+    }));
+    progress.style.height = ((i / (data.length - 1)) * Math.max(0, section.querySelector('.process-rail').clientHeight - 110)) + 'px';
   }
-  buttons.forEach((b,i)=>b.addEventListener('click',()=>{show(i); const r=section.getBoundingClientRect(); window.scrollBy({top:r.top + window.scrollY - window.scrollY + i*110,behavior:'smooth'});}));
-  function onScroll(){
-    if(window.innerWidth<901)return;
-    const r=section.getBoundingClientRect();
-    const vh=window.innerHeight;
-    const start=vh*.55;
-    const end=-Math.max(180, r.height-vh*.7);
-    const p=Math.max(0,Math.min(1,(start-r.top)/(start-end)));
-    show(Math.round(p*(data.length-1)));
+  function schedule() {
+    clearTimeout(timer);
+    if (playButton) {
+      playButton.textContent = paused ? 'Play' : 'Pause';
+      playButton.setAttribute('aria-label', (paused ? 'Play' : 'Pause') + ' automatic process steps');
+    }
+    if (mobile.matches && visible && !paused && !document.hidden) {
+      timer = setTimeout(() => { show(active + 1); schedule(); }, 6500);
+    }
   }
-  window.addEventListener('scroll',onScroll,{passive:true}); window.addEventListener('resize',onScroll); show(0); onScroll();
+  buttons.forEach((button, i) => button.addEventListener('click', () => {
+    show(i);
+    if (mobile.matches) { paused = true; schedule(); }
+    else section.scrollIntoView({behavior:reducedMotion.matches ? 'instant' : 'smooth', block:'start'});
+  }));
+  playButton?.addEventListener('click', () => { paused = !paused; schedule(); });
+  // Keyboard reading should never be interrupted by changing copy.
+  stage.addEventListener('focusin', event => {
+    if (mobile.matches && event.target !== playButton) { paused = true; schedule(); }
+  });
+  new IntersectionObserver(entries => {
+    visible = entries[0].isIntersecting; schedule();
+  }, {threshold:0.35}).observe(stage);
+  function onScroll() {
+    if (mobile.matches) return;
+    const r = section.getBoundingClientRect(), vh = innerHeight;
+    const start = vh * .55, end = -Math.max(180, r.height - vh * .7);
+    const fraction = Math.max(0, Math.min(1, (start - r.top) / (start - end)));
+    show(Math.round(fraction * (data.length - 1)));
+  }
+  addEventListener('scroll', onScroll, {passive:true});
+  mobile.addEventListener('change', () => { schedule(); onScroll(); });
+  reducedMotion.addEventListener('change', () => { paused = reducedMotion.matches; schedule(); });
+  document.addEventListener('visibilitychange', schedule);
+  show(0); onScroll();
+
 })();
 
 // V30 testimonials: rise quickly, then horizontal scroll while sticky
@@ -370,7 +410,7 @@ const revealObserver=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.
   const track=section.querySelector('[data-t32-track]'); const cards=[...track.children];
   const stage=section.querySelector('.testimonial-v32-stage'); const progress=section.querySelector('[data-t32-progress]');
   function render(){
-    if(innerWidth<901)return;
+    if(innerWidth<=980){track.style.transform='';return;}
     const r=section.getBoundingClientRect(), vh=innerHeight;
     const total=Math.max(1,section.offsetHeight-vh); const p=Math.max(0,Math.min(1,-r.top/total));
     const rise=Math.min(1,p/.14);

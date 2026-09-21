@@ -1567,7 +1567,7 @@ header .theme-toggle, header .mode-toggle, header .theme-switch,
 <link href="assets/service-v115.css" rel="stylesheet"/>
 <link href="assets/portfolio-realism.css?v=2" rel="stylesheet"/>
 <link href="assets/site-refinements.css?v=1" rel="stylesheet"/>
-<link rel="stylesheet" href="assets/mobile-layout.css?v=2"/>
+<link rel="stylesheet" href="assets/mobile-layout.css?v=3"/>
 </head>
 <style>
 /* Service page consistency */
@@ -1604,7 +1604,7 @@ header .theme-toggle, header .mode-toggle, header .theme-switch,
 <a class="mobile-menu-cta" href="contact.html">Speak to an expert <span><svg class="huco-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 18 18 6M6 6h12v12"/></svg></span></a>
 </div>
 <main class="performance-main performance-v35 service-page-generic" data-service="Video Production">
-<section class="pm49-hero service-generic-hero"><img alt="Video Production" class="pm49-bg-video service-hero-image" decoding="async" height="882" loading="lazy" src="assets/performance-hero-red-orb.webp" width="1783"/><div class="pm49-overlay service-hero-overlay"></div><div class="shell pm49-hero-inner"><div class="pm49-copy"><span class="pm49-pill">VIDEO PRODUCTION <b>›</b></span><h1>Video made to earn attention and move people.</h1><p>Commercial video, campaign films, reels and branded content produced for modern platforms and real business goals.</p><a class="pm49-cta" href="#service-review">Request a free review</a><div class="pm49-stats"><div><strong><span>01</span></strong><small>Connected team</small></div><i></i><div><strong><span>360°</span></strong><small>Delivery approach</small></div></div></div><div class="pm49-form-wrap" id="service-review"><form class="pm49-form" data-email-brief><div class="pm49-form-top"><span>FREE / PROJECT REVIEW</span><h2>Tell us about your project.</h2><p>Share your current setup and goal. We will recommend the clearest next move.</p></div><div class="pm49-fields"><label><span>Name</span><input name="name" placeholder="Your name" required="" type="text"/></label><label><span>Company</span><input name="company" placeholder="Company name" type="text"/></label><label><span>Email</span><input name="email" placeholder="name@company.com" required="" type="email"/></label><label><span>Phone / WhatsApp</span><input name="phone" placeholder="+971 50 000 0000" type="tel"/></label><label><span>Project stage</span><select name="stage"><option value="">Select stage</option><option>Planning</option><option>Already active</option><option>Need improvement</option><option>Ready to start</option></select></label><label><span>Main goal</span><select name="goal"><option value="">Select goal</option><option>Generate more demand</option><option>Improve customer experience</option><option>Build or launch</option><option>Automate operations</option></select></label></div><button type="submit">Prepare review request <b>›</b></button><small class="pm49-form-note">Prepare your request, then send it using your email app.</small></form></div></div></section>
+<section class="pm49-hero service-generic-hero"><img alt="Video Production" class="pm49-bg-video service-hero-image" decoding="async" height="882" loading="eager" fetchpriority="high" src="assets/performance-hero-red-orb.webp" width="1783"/><div class="pm49-overlay service-hero-overlay"></div><div class="shell pm49-hero-inner"><div class="pm49-copy"><span class="pm49-pill">VIDEO PRODUCTION <b>›</b></span><h1>Video made to earn attention and move people.</h1><p>Commercial video, campaign films, reels and branded content produced for modern platforms and real business goals.</p><a class="pm49-cta" href="#service-review">Request a free review</a><div class="pm49-stats"><div><strong><span>01</span></strong><small>Connected team</small></div><i></i><div><strong><span>360°</span></strong><small>Delivery approach</small></div></div></div><div class="pm49-form-wrap" id="service-review"><form class="pm49-form" data-email-brief><div class="pm49-form-top"><span>FREE / PROJECT REVIEW</span><h2>Tell us about your project.</h2><p>Share your current setup and goal. We will recommend the clearest next move.</p></div><div class="pm49-fields"><label><span>Name</span><input name="name" placeholder="Your name" required="" type="text"/></label><label><span>Company</span><input name="company" placeholder="Company name" type="text"/></label><label><span>Email</span><input name="email" placeholder="name@company.com" required="" type="email"/></label><label><span>Phone / WhatsApp</span><input name="phone" placeholder="+971 50 000 0000" type="tel"/></label><label><span>Project stage</span><select name="stage"><option value="">Select stage</option><option>Planning</option><option>Already active</option><option>Need improvement</option><option>Ready to start</option></select></label><label><span>Main goal</span><select name="goal"><option value="">Select goal</option><option>Generate more demand</option><option>Improve customer experience</option><option>Build or launch</option><option>Automate operations</option></select></label></div><button type="submit">Prepare review request <b>›</b></button><small class="pm49-form-note">Prepare your request, then send it using your email app.</small></form></div></div></section>
 <section class="huco-editorial-process-v103" id="service-system">
 <div class="huco-editorial-main">
 <div class="huco-editorial-copy">
@@ -1690,18 +1690,22 @@ header .theme-toggle, header .mode-toggle, header .theme-switch,
 <p class="footer-v21-brand-copy">Independent digital marketing, media and technology studio creating campaigns, content and digital experiences built for measurable growth.</p>
 <div class="footer-v21-brand-tags"><span>Strategy</span><span>Performance</span><span>Production</span><span>Technology</span></div>
 </img></div>
-<div class="footer-v21-col">
-<h4>Services</h4>
+<details class="footer-v21-col footer-menu" open>
+<summary><h4>Services</h4><svg class="huco-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m6 9 6 6 6-6"/></svg></summary>
+<div class="footer-menu-links">
 <a href="performance-marketing.html">Performance Marketing</a>
 <a href="video-production.html">Video &amp; Production</a>
 <a href="web-design-development.html">Development</a>
 <a href="erp-crm-portals.html">Business Platforms</a>
 </div>
-<div class="footer-v21-col">
-<h4>Company</h4>
+</details>
+<details class="footer-v21-col footer-menu" open>
+<summary><h4>Company</h4><svg class="huco-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m6 9 6 6 6-6"/></svg></summary>
+<div class="footer-menu-links">
 <a href="index.html">Home</a><a href="about.html">About</a><a href="index.html#work">Our Work</a>
 <a href="index.html#process">Process</a><a href="insights.html">Insights</a><a href="contact.html">Contact Us</a>
 </div>
+</details>
 <div class="footer-v21-news"><h4>Fresh thinking</h4><p>Practical ideas on strategy, creative work and digital products.</p><a class="footer-insights-link" href="insights.html">Explore Insights <span aria-hidden="true"><svg class="huco-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 18 18 6M6 6h12v12"/></svg></span></a></div>
 <div class="footer-v21-office">
 <h4>Dubai</h4>
@@ -1721,7 +1725,7 @@ header .theme-toggle, header .mode-toggle, header .theme-switch,
 </div>
 <div class="shell footer-v21-bottom"><span>© 2026 HUCO Digital Marketing Agency</span><div class="footer-v92-legal"><a href="privacy-policy.html">Privacy Policy</a><a href="terms-and-conditions.html">Terms &amp; Conditions</a></div><a href="#header">Back to top <svg class="huco-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 20V4M5 11l7-7 7 7"/></svg></a></div>
 </footer>
-<script defer="" src="assets/script.js?v=mobile1"></script>
+<script defer="" src="assets/script.js?v=mobile2"></script>
 <script defer="" src="assets/service-v115.js"></script>
-<script defer="" src="assets/service-mega-v120.js"></script><script defer src="assets/site-refinements.js?v=mobile1"></script>
+<script defer="" src="assets/service-mega-v120.js"></script><script defer src="assets/site-refinements.js?v=mobile2"></script>
 </body></html>

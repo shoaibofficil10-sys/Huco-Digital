@@ -36,7 +36,7 @@ header nav a, .site-header nav a, .header nav a {
 <link href="assets/responsive-v92.css" rel="stylesheet"/>
 <link href="assets/service-pinned-v97.css" rel="stylesheet"/>
 <link href="assets/site-refinements.css?v=1" rel="stylesheet"/>
-<link rel="stylesheet" href="assets/mobile-layout.css?v=2"/>
+<link rel="stylesheet" href="assets/mobile-layout.css?v=3"/>
 </head><body class="inner-page about-page responsive-site"><header class="site-header" id="header">
 <div class="header-shell">
 <a aria-label="HUCO Digital home" class="brand" href="index.html"><img alt="HUCO Digital" decoding="async" height="245" src="assets/huco-logo.png" width="1043"/></a>
@@ -72,18 +72,22 @@ header nav a, .site-header nav a, .header nav a {
 <p class="footer-v21-brand-copy">Independent digital marketing, media and technology studio creating campaigns, content and digital experiences built for measurable growth.</p>
 <div class="footer-v21-brand-tags"><span>Strategy</span><span>Performance</span><span>Production</span><span>Technology</span></div>
 </div>
-<div class="footer-v21-col">
-<h4>Services</h4>
+<details class="footer-v21-col footer-menu" open>
+<summary><h4>Services</h4><svg class="huco-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m6 9 6 6 6-6"/></svg></summary>
+<div class="footer-menu-links">
 <a href="performance-marketing.html">Performance Marketing</a>
 <a href="video-production.html">Video &amp; Production</a>
 <a href="web-design-development.html">Development</a>
 <a href="erp-crm-portals.html">Business Platforms</a>
 </div>
-<div class="footer-v21-col">
-<h4>Company</h4>
+</details>
+<details class="footer-v21-col footer-menu" open>
+<summary><h4>Company</h4><svg class="huco-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m6 9 6 6 6-6"/></svg></summary>
+<div class="footer-menu-links">
 <a href="index.html">Home</a><a href="about.html">About</a><a href="index.html#work">Our Work</a>
 <a href="index.html#process">Process</a><a href="insights.html">Insights</a><a href="contact.html">Contact Us</a>
 </div>
+</details>
 <div class="footer-v21-news"><h4>Fresh thinking</h4><p>Practical ideas on strategy, creative work and digital products.</p><a class="footer-insights-link" href="insights.html">Explore Insights <span aria-hidden="true"><svg class="huco-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 18 18 6M6 6h12v12"/></svg></span></a></div>
 <div class="footer-v21-office">
 <h4>Dubai</h4>
@@ -104,7 +108,7 @@ header nav a, .site-header nav a, .header nav a {
 <div class="shell footer-v21-bottom"><span>© 2026 HUCO Digital Marketing Agency</span><div class="footer-v92-legal"><a href="privacy-policy.html">Privacy Policy</a><a href="terms-and-conditions.html">Terms &amp; Conditions</a></div><a href="#header">Back to top <svg class="huco-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 20V4M5 11l7-7 7 7"/></svg></a></div>
 </footer>
 <a aria-label="Chat on WhatsApp" class="floating-wa" href="https://wa.me/971555365560">WA</a>
-<script defer="" src="assets/script.js?v=mobile1"></script><script>(function(){const items=[...document.querySelectorAll('.about-unified-items span')];if(!items.length)return;let i=0;setInterval(()=>{items.forEach(x=>x.classList.remove('is-active'));i=(i+1)%items.length;items[i].classList.add('is-active')},1350)})();</script>
+<script defer="" src="assets/script.js?v=mobile2"></script><script>(function(){const items=[...document.querySelectorAll('.about-unified-items span')];if(!items.length)return;let i=0;setInterval(()=>{items.forEach(x=>x.classList.remove('is-active'));i=(i+1)%items.length;items[i].classList.add('is-active')},1350)})();</script>
 <script>
 (function(){
   const counters = document.querySelectorAll('.about-counter');
@@ -130,5 +134,5 @@ header nav a, .site-header nav a, .header nav a {
 })();
 </script>
 <script>document.querySelectorAll(".faq-v75-q").forEach(btn=>{btn.addEventListener("click",()=>{const item=btn.closest(".faq-v75-item"),ans=item.querySelector(".faq-v75-a"),open=item.classList.contains("is-open");document.querySelectorAll(".faq-v75-item").forEach(x=>{x.classList.remove("is-open");const a=x.querySelector(".faq-v75-a");if(a)a.style.maxHeight="0px"});if(!open){item.classList.add("is-open");ans.style.maxHeight=ans.scrollHeight+"px"}})});</script><script defer="" src="assets/service-pinned-v97.js"></script>
-<script defer src="assets/site-refinements.js?v=mobile1"></script>
+<script defer src="assets/site-refinements.js?v=mobile2"></script>
 </body></html>
