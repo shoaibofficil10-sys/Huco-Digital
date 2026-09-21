@@ -51,7 +51,7 @@ body.responsive-site .clients-v48 .client-logo-item:focus-visible {
 }
 /* Only the Earth's surface turns; the globe and caption never orbit or shift. */
 body.responsive-site .clients-v48 .client-worldwide { cursor:default; }
-body.responsive-site .clients-v48 .globe-wrap {
+body.responsive-site #clients .client-worldwide .globe-wrap {
   width:60px!important;
   height:60px!important;
   margin:0 0 6px!important;
