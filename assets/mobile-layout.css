@@ -388,8 +388,10 @@ body[data-theme="dark"] .footer-v21 .footer-insights-link { color:#fff!important
     width:100%!important; max-width:100%!important; margin-inline:auto!important; text-align:center!important;
   }
   body.responsive-site .hero-actions { width:100%!important; gap:16px!important; }
-  body.responsive-site .hero-actions a { align-self:center!important; }
+  body.responsive-site .hero-actions a { align-self:center!important; width:max-content!important; max-width:100%!important; }
   body.responsive-site .about-ref-hero .about-ref-inner { justify-items:center!important; }
+  body.responsive-site .about-ref-hero::before { background:linear-gradient(180deg,rgba(0,0,0,.3),rgba(0,0,0,.5) 45%,rgba(0,0,0,.35))!important; }
+  body.responsive-site .about-ref-hero .about-ref-copy p { color:rgba(255,255,255,.9)!important; }
   body.responsive-site.about-page .about-ref-hero .about-ref-copy,
   body.responsive-site.contact-page .contact-ref-hero .about-ref-copy,
   body.responsive-site.service-landing-page .pm49-copy {
