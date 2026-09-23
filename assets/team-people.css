@@ -33,8 +33,11 @@
 .people-department-head .people-kicker {margin-bottom:10px;}
 .people-department-head h2 {margin:0;font-size:clamp(28px,3vw,40px);font-weight:600;line-height:1.2;letter-spacing:-.04em;}
 .people-department-head > p {max-width:360px;margin:0;color:#6c6864;font-size:14px;line-height:1.7;}
-.people-grid {display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:32px 22px;}
-.people-grid--three {grid-template-columns:repeat(3,minmax(0,1fr));}
+.people-grid {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:32px 22px;}
+.people-grid--two {grid-template-columns:repeat(2,minmax(0,1fr));}
+.people-department--compact {display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr);gap:40px;align-items:center;}
+.people-department--compact .people-department-head {display:block;margin-bottom:0;}
+.people-department--compact .people-department-head > p {margin-top:18px;}
 .people-card {min-width:0;}
 .people-card-portrait {aspect-ratio:4/5;overflow:hidden;border-radius:4px;background:#e9e8e5;}
 .people-card-portrait img {display:block;width:100%;height:100%;object-fit:cover;object-position:center top;transition:transform .45s ease;}
@@ -80,6 +83,8 @@
   .people-department {padding-top:36px;}
   .people-department + .people-department {margin-top:36px;}
   .people-department-head {display:block;margin-bottom:24px;}
+  .people-department--compact {display:block;}
+  .people-department--compact .people-department-head {margin-bottom:24px;}
   .people-department-head h2 {font-size:30px;}
   .people-department-head > p {max-width:100%;margin-top:14px;}
   .people-grid {grid-template-columns:repeat(2,minmax(0,1fr));gap:28px 16px;}
