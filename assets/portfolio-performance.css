@@ -1,0 +1,9 @@
+/* Rendering hints only: retain the existing portfolio layout and transitions. */
+@media(min-width:1101px) and (prefers-reduced-motion:no-preference) {
+  #work .portfolio-scroll-story.is-nearby .portfolio-scroll-slide {will-change:opacity,transform;}
+}
+@media(prefers-reduced-motion:reduce) {
+  #work .portfolio-scroll-slide,
+  #work .portfolio-scroll-slide.is-active {transition:none!important;}
+  #work .portfolio-scroll-copy > * {animation:none!important;}
+}

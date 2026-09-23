@@ -132,68 +132,179 @@ const revealObserver=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.
   const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.querySelectorAll('[data-count]').forEach(el=>{let end=+el.dataset.count,start=0;const t=setInterval(()=>{start+=Math.max(1,Math.ceil(end/40));if(start>=end){start=end;clearInterval(t)}el.textContent=start},28)});obs.unobserve(e.target)}}),{threshold:.35});document.querySelectorAll('.results-v14').forEach(x=>obs.observe(x));
 })();
 
-/* V48 reliable scroll-driven portfolio */
+/* Portfolio: predecode nearby images and keep scroll work out of layout. */
 (() => {
   const story = document.querySelector('[data-portfolio-scroll]');
   if (!story) return;
   const slides = [...story.querySelectorAll('[data-portfolio-slide]')];
+  if (!slides.length) return;
   const nav = [...story.querySelectorAll('[data-portfolio-nav]')];
   const dots = [...story.querySelectorAll('[data-portfolio-dot]')];
   const progress = story.querySelector('[data-portfolio-progress]');
-  const fields = {
-    index: story.querySelector('[data-portfolio-index]'),
-    kicker: story.querySelector('[data-portfolio-kicker]'),
-    title: story.querySelector('[data-portfolio-title]'),
-    text: story.querySelector('[data-portfolio-text]'),
-    result: story.querySelector('[data-portfolio-result]'),
-    resultLabel: story.querySelector('[data-portfolio-result-label]')
-  };
+  const fields = Object.fromEntries(['index', 'kicker', 'title', 'text', 'result', 'resultLabel'].map(key => [
+    key, story.querySelector(`[data-portfolio-${key === 'resultLabel' ? 'result-label' : key}]`)
+  ]));
   const copy = story.querySelector('.portfolio-scroll-copy');
-  let active = -1;
-  let raf = 0;
+  const serviceLink = copy?.querySelector('a');
+  const desktop = matchMedia('(min-width:1101px)');
+  const reducedMotion = matchMedia('(prefers-reduced-motion:reduce)');
+  const images = slides.map(slide => [...slide.querySelectorAll('img')]);
+  const warmed = new WeakSet();
+  let active = -1, raf = 0, nearby = false, geometryDirty = true;
+  let storyTop = 0, range = 1, previousProgress = -1;
+  let navigation = null, navigationTimer = 0, textAnimations = [];
 
-  function setActive(i, immediate=false){
-    i = Math.max(0, Math.min(slides.length-1, i));
-    if (i === active && !immediate) return;
-    active = i;
-    slides.forEach((slide,n) => {
-      slide.classList.toggle('is-active', n===i);
-      slide.classList.toggle('is-before', n<i);
-      slide.classList.toggle('is-after', n>i);
-      slide.setAttribute('aria-hidden', n===i ? 'false' : 'true');
+  function warmSlide(index, priority = 'low') {
+    if (!slides[index]) return;
+    images[index].forEach((img, position) => {
+      // These two website cards are hidden by the existing desktop design.
+      if (desktop.matches && slides[index].classList.contains('portfolio-web-grid') && position >= 4) return;
+      img.fetchPriority = priority;
+      if (warmed.has(img)) return;
+      warmed.add(img);
+      img.loading = 'eager';
+      img.decode?.().catch(() => {});
     });
-    nav.forEach((el,n)=>{el.classList.toggle('is-active',n===i);el.setAttribute('aria-pressed',String(n===i));});
-    dots.forEach((el,n)=>el.classList.toggle('is-active',n===i));
-    const d=slides[i]?.dataset || {};
-    const serviceLink=copy?.querySelector('a'); if(serviceLink && d.href) serviceLink.href=d.href;
-    if(copy){copy.classList.remove('is-changing'); void copy.offsetWidth; copy.classList.add('is-changing')}
-    Object.entries(fields).forEach(([k,el])=>{if(el) el.textContent=d[k]||''});
   }
 
-  function update(){
+  function warmNearby() {
+    if (!nearby) return;
+    warmSlide(active, 'auto');
+    slides.forEach((_, index) => { if (index !== active) warmSlide(index); });
+  }
+
+  function setActive(index, initial = false) {
+    index = Math.max(0, Math.min(slides.length - 1, index));
+    if (index === active) return;
+    active = index;
+    if (nearby || !initial) warmSlide(index, 'auto');
+    slides.forEach((slide, position) => {
+      slide.classList.toggle('is-active', position === index);
+      slide.classList.toggle('is-before', position < index);
+      slide.classList.toggle('is-after', position > index);
+      slide.setAttribute('aria-hidden', String(position !== index));
+      slide.inert = position !== index;
+    });
+    nav.forEach((button, position) => {
+      button.classList.toggle('is-active', position === index);
+      button.setAttribute('aria-pressed', String(position === index));
+    });
+    dots.forEach((dot, position) => dot.classList.toggle('is-active', position === index));
+    const data = slides[index].dataset;
+    Object.entries(fields).forEach(([key, element]) => {
+      if (element) element.textContent = data[key] || '';
+    });
+    if (serviceLink && data.href) serviceLink.href = data.href;
+    // Same 380 ms entrance as before, without offsetWidth forcing a full reflow.
+    textAnimations.forEach(animation => animation.cancel());
+    textAnimations = [];
+    if (copy && !initial && !reducedMotion.matches) {
+      textAnimations = [...copy.children].map(element => element.animate(
+        [{opacity:0, transform:'translateY(9px)'}, {opacity:1, transform:'none'}],
+        {duration:380, easing:'ease', fill:'both'}
+      ));
+    }
+  }
+
+  function measure() {
+    storyTop = story.getBoundingClientRect().top + window.scrollY;
+    range = Math.max(1, story.offsetHeight - window.innerHeight);
+    geometryDirty = false;
+  }
+
+  function finishNavigation() {
+    clearTimeout(navigationTimer);
+    navigation = null;
+    requestUpdate();
+  }
+
+  function update() {
     raf = 0;
-    if (window.innerWidth <= 1100) return;
-    const rect = story.getBoundingClientRect();
-    const range = Math.max(1, story.offsetHeight - window.innerHeight);
-    const p = Math.max(0, Math.min(1, -rect.top / range));
-    const idx = Math.min(slides.length-1, Math.floor(p * slides.length));
-    setActive(idx);
-    if(progress) progress.style.transform=`scaleX(${p})`;
+    if (geometryDirty) measure();
+    if (!desktop.matches || !nearby) return;
+    const position = Math.max(0, Math.min(1, (window.scrollY - storyTop) / range));
+    if (navigation && Math.abs(window.scrollY - navigation.top) < 2) {
+      clearTimeout(navigationTimer);
+      navigation = null;
+    }
+    if (!navigation) {
+      let index = Math.min(slides.length - 1, Math.floor(position * slides.length));
+      // A small dead zone prevents trackpad jitter from flipping tabs repeatedly.
+      if (Math.abs(index - active) === 1) {
+        const boundary = Math.max(index, active) / slides.length;
+        if (Math.abs(position - boundary) < .006) index = active;
+      }
+      setActive(index);
+    }
+    if (progress && position !== previousProgress) {
+      progress.style.transform = `scaleX(${position})`;
+      previousProgress = position;
+    }
   }
-  function onScroll(){ if(!raf) raf=requestAnimationFrame(update); }
-  function goTo(i){
-    if(window.innerWidth<=1100){ setActive(i); return; }
-    const top = window.scrollY + story.getBoundingClientRect().top;
-    const range = Math.max(1, story.offsetHeight-window.innerHeight);
-    const target = top + ((i + .08) / slides.length) * range;
-    window.scrollTo({top:target,behavior:'smooth'});
+
+  function requestUpdate() {
+    if (!raf) raf = requestAnimationFrame(update);
   }
-  nav.forEach((el,i)=>el.addEventListener('click',()=>goTo(i)));
-  dots.forEach((el,i)=>el.addEventListener('click',()=>goTo(i)));
-  window.addEventListener('scroll',onScroll,{passive:true});
-  window.addEventListener('resize',onScroll,{passive:true});
-  setActive(0,true); update();
+
+  function refreshGeometry() {
+    geometryDirty = true;
+    requestUpdate();
+  }
+
+  function goTo(index) {
+    clearTimeout(navigationTimer);
+    navigation = null;
+    // Read before changing any classes or text.
+    if (geometryDirty) measure();
+    setActive(index);
+    if (!desktop.matches) return;
+    const top = storyTop + ((index + .08) / slides.length) * range;
+    navigation = {top};
+    // Keep the clicked tab selected while native smooth scrolling passes other tabs.
+    window.scrollTo({top, behavior:reducedMotion.matches ? 'instant' : 'smooth'});
+    navigationTimer = setTimeout(finishNavigation, 1400);
+    requestUpdate();
+  }
+
+  nav.forEach((button, index) => {
+    button.addEventListener('click', () => goTo(index));
+    button.addEventListener('pointerenter', () => warmSlide(index, 'auto'));
+    button.addEventListener('focus', () => warmSlide(index, 'auto'));
+  });
+  dots.forEach((dot, index) => dot.addEventListener('click', () => goTo(index)));
+  window.addEventListener('scroll', () => { if (nearby) requestUpdate(); }, {passive:true});
+  window.addEventListener('resize', refreshGeometry, {passive:true});
+  window.addEventListener('load', refreshGeometry, {once:true});
+  window.addEventListener('scrollend', () => { if (navigation) finishNavigation(); }, {passive:true});
+  const interruptNavigation = () => { if (navigation) finishNavigation(); };
+  window.addEventListener('wheel', interruptNavigation, {passive:true});
+  window.addEventListener('touchstart', interruptNavigation, {passive:true});
+  window.addEventListener('pointerdown', interruptNavigation, {passive:true});
+  window.addEventListener('keydown', event => {
+    if (['ArrowUp', 'ArrowDown', 'PageUp', 'PageDown', 'Home', 'End', ' '].includes(event.key)) interruptNavigation();
+  });
+  desktop.addEventListener('change', () => {
+    clearTimeout(navigationTimer);
+    navigation = null;
+    warmNearby();
+    refreshGeometry();
+  });
+  reducedMotion.addEventListener('change', () => {
+    if (reducedMotion.matches) textAnimations.forEach(animation => animation.cancel());
+  });
+  new ResizeObserver(refreshGeometry).observe(story);
+  new ResizeObserver(refreshGeometry).observe(document.body);
+  document.fonts?.ready.then(refreshGeometry);
+  new IntersectionObserver(entries => {
+    nearby = entries[0].isIntersecting;
+    story.classList.toggle('is-nearby', nearby);
+    warmNearby();
+    refreshGeometry();
+  }, {rootMargin:'1200px 0px'}).observe(story);
+  setActive(0, true);
+  requestUpdate();
 })();
+
 
 /* About in-view motion */
 (() => {
@@ -409,10 +520,14 @@ const revealObserver=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.
   const section=document.querySelector('[data-testimonial-v32]'); if(!section)return;
   const track=section.querySelector('[data-t32-track]'); const cards=[...track.children];
   const stage=section.querySelector('.testimonial-v32-stage'); const progress=section.querySelector('[data-t32-progress]');
+  let frame = 0;
   function render(){
+    frame = 0;
     if(innerWidth<=980){track.style.transform='';return;}
     const r=section.getBoundingClientRect(), vh=innerHeight;
+    if(r.top >= vh || r.bottom <= 0)return;
     const total=Math.max(1,section.offsetHeight-vh); const p=Math.max(0,Math.min(1,-r.top/total));
+    const max=Math.max(0,track.scrollWidth-stage.clientWidth);
     const rise=Math.min(1,p/.14);
     cards.forEach((c,i)=>{
       const d=i*.018, cp=Math.max(0,Math.min(1,(rise-d)/(1-d||1)));
@@ -420,11 +535,11 @@ const revealObserver=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.
       c.style.transform=`translate3d(0,${(1-cp)*(72+i*5)}px,0) scale(${.965+cp*.035}) rotate(${(1-cp)*(i%2?1.2:-1.2)}deg)`;
     });
     const hp=Math.max(0,Math.min(1,(p-.12)/.88));
-    const max=Math.max(0,track.scrollWidth-stage.clientWidth);
     track.style.transform=`translate3d(${-max*hp}px,0,0)`;
     if(progress)progress.style.transform=`scaleX(${hp})`;
   }
-  addEventListener('scroll',render,{passive:true}); addEventListener('resize',render); render();
+  const request = () => { if(!frame) frame=requestAnimationFrame(render); };
+  addEventListener('scroll',request,{passive:true}); addEventListener('resize',request); render();
 })();
 
 // V32 insight reveal
