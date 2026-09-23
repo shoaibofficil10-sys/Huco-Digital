@@ -3,9 +3,10 @@
 .people-main .people-shell {width:min(100% - 80px,1280px);margin-inline:auto;}
 .people-main h1,.people-main h2,.people-main h3 {font-family:Manrope,Inter,sans-serif;}
 .people-main .people-kicker {display:block;margin:0 0 20px;color:#c2272e;font-size:11px;font-weight:700;line-height:1.5;letter-spacing:.16em;text-transform:uppercase;}
-.people-hero {position:relative;padding:162px 0 72px;overflow:hidden;background:radial-gradient(ellipse at 85% 0%,#56151b 0,transparent 53%),#101011;color:#fff;text-align:center;}
-.people-hero::before {content:"";position:absolute;inset:0;background-image:linear-gradient(#ffffff06 1px,transparent 1px),linear-gradient(90deg,#ffffff06 1px,transparent 1px);background-size:72px 72px;pointer-events:none;}
-.people-hero .people-shell {position:relative;}
+.people-hero {position:relative;padding:162px 0 72px;overflow:hidden;background:#0d0d0d;color:#fff;text-align:center;}
+.people-hero::before {content:"";position:absolute;width:980px;height:980px;border-radius:50%;top:-650px;right:-170px;background:radial-gradient(circle at 48% 74%,#ff4338 0%,#bd1d22 38%,#5c0d10 58%,#180304 71%,transparent 72%);opacity:.98;pointer-events:none;}
+.people-hero::after {content:"";position:absolute;inset:0;background:linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);background-size:58px 58px;mask-image:linear-gradient(to bottom,black 20%,transparent 84%);pointer-events:none;}
+.people-hero .people-shell {position:relative;z-index:2;}
 .people-hero .people-kicker {color:#ff858b;margin-bottom:22px;}
 .people-hero h1 {max-width:1000px;margin:0 auto;font-size:clamp(42px,5.1vw,74px);font-weight:600;line-height:1.09;letter-spacing:-.055em;text-wrap:balance;}
 .people-hero p {max-width:640px;margin:24px auto 0;color:#d4d2d2;font-size:16px;line-height:1.75;}
@@ -66,6 +67,7 @@
 @media(max-width:760px) {
   .people-main .people-shell {width:calc(100% - 40px);}
   .people-hero {padding:122px 0 52px;}
+  .people-hero::before {width:640px;height:640px;top:-430px;right:-250px;}
   .people-hero h1 {font-size:clamp(36px,7.5vw,54px);}
   .people-hero p {font-size:15px;}
   .people-main .people-nav {gap:8px 20px;margin-top:24px;}
