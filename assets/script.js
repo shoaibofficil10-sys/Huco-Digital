@@ -1,5 +1,22 @@
 const menuToggle=document.getElementById('menuToggle'),mobileMenu=document.getElementById('mobileMenu');if(menuToggle&&mobileMenu){const closeBtn=mobileMenu.querySelector('.mobile-menu-close');const setMenu=(open)=>{mobileMenu.classList.toggle('open',open);mobileMenu.setAttribute('aria-hidden',String(!open));menuToggle.setAttribute('aria-expanded',String(open));document.body.style.overflow=open?'hidden':''};menuToggle.addEventListener('click',()=>setMenu(!mobileMenu.classList.contains('open')));closeBtn?.addEventListener('click',()=>setMenu(false));mobileMenu.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>setMenu(false)));document.addEventListener('keydown',e=>{if(e.key==='Escape')setMenu(false)});window.addEventListener('resize',()=>{if(innerWidth>980)setMenu(false)})}
-const header=document.getElementById('header');const progress=document.getElementById('progressBar');window.addEventListener('scroll',()=>{if(header)header.classList.toggle('scrolled',scrollY>30);if(progress){const max=document.documentElement.scrollHeight-innerHeight;progress.style.transform=`scaleX(${max?scrollY/max:0})`}},{passive:true});
+/* Cache document height; scrolling only writes composited progress. */
+const header=document.getElementById('header');const progress=document.getElementById('progressBar');
+(() => {
+  let frame=0, max=1, scrolled=null;
+  function render(){
+    frame=0;
+    const y=window.scrollY, next=y>30;
+    if(header && next!==scrolled){header.classList.toggle('scrolled',next);scrolled=next;}
+    if(progress)progress.style.transform=`scaleX(${Math.min(1,Math.max(0,y/max))})`;
+  }
+  const request=()=>{if(!frame)frame=requestAnimationFrame(render);};
+  function measure(){max=Math.max(1,document.documentElement.scrollHeight-innerHeight);request();}
+  new ResizeObserver(measure).observe(document.body);
+  window.addEventListener('scroll',request,{passive:true});
+  window.addEventListener('resize',measure,{passive:true});
+  window.addEventListener('load',measure,{once:true});
+  measure();
+})();
 const revealObserver=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');else if(e.boundingClientRect.top>0)e.target.classList.remove('visible')}),{threshold:.12});document.querySelectorAll('.reveal').forEach(el=>revealObserver.observe(el));
 
 /* Optional legacy industries interaction. Guarded so newer industry layouts do not stop the rest of the site JS. */
@@ -195,13 +212,13 @@ const revealObserver=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.
       if (element) element.textContent = data[key] || '';
     });
     if (serviceLink && data.href) serviceLink.href = data.href;
-    // Same 380 ms entrance as before, without offsetWidth forcing a full reflow.
+    // Short, composited entrance without forcing a synchronous layout.
     textAnimations.forEach(animation => animation.cancel());
     textAnimations = [];
     if (copy && !initial && !reducedMotion.matches) {
       textAnimations = [...copy.children].map(element => element.animate(
         [{opacity:0, transform:'translateY(9px)'}, {opacity:1, transform:'none'}],
-        {duration:380, easing:'ease', fill:'both'}
+        {duration:240, easing:'ease-out', fill:'both'}
       ));
     }
   }
@@ -275,7 +292,9 @@ const revealObserver=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.
   window.addEventListener('scroll', () => { if (nearby) requestUpdate(); }, {passive:true});
   window.addEventListener('resize', refreshGeometry, {passive:true});
   window.addEventListener('load', refreshGeometry, {once:true});
-  window.addEventListener('scrollend', () => { if (navigation) finishNavigation(); }, {passive:true});
+  window.addEventListener('scrollend', () => {
+    if (navigation && Math.abs(window.scrollY - navigation.top) < 2) finishNavigation();
+  }, {passive:true});
   const interruptNavigation = () => { if (navigation) finishNavigation(); };
   window.addEventListener('wheel', interruptNavigation, {passive:true});
   window.addEventListener('touchstart', interruptNavigation, {passive:true});
@@ -473,14 +492,18 @@ const revealObserver=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.
   new IntersectionObserver(entries => {
     visible = entries[0].isIntersecting; schedule();
   }, {threshold:0.35}).observe(stage);
+  let scrollFrame=0, scrollNearby=false;
   function onScroll() {
-    if (mobile.matches) return;
+    scrollFrame=0;
+    if (mobile.matches || !scrollNearby) return;
     const r = section.getBoundingClientRect(), vh = innerHeight;
     const start = vh * .55, end = -Math.max(180, r.height - vh * .7);
     const fraction = Math.max(0, Math.min(1, (start - r.top) / (start - end)));
     show(Math.round(fraction * (data.length - 1)));
   }
-  addEventListener('scroll', onScroll, {passive:true});
+  const requestScroll=()=>{if(scrollNearby&&!scrollFrame)scrollFrame=requestAnimationFrame(onScroll);};
+  new IntersectionObserver(entries=>{scrollNearby=entries[0].isIntersecting;requestScroll();},{rootMargin:'200px 0px'}).observe(section);
+  addEventListener('scroll', requestScroll, {passive:true});
   mobile.addEventListener('change', () => { schedule(); onScroll(); });
   reducedMotion.addEventListener('change', () => { paused = reducedMotion.matches; schedule(); });
   document.addEventListener('visibilitychange', schedule);
@@ -520,9 +543,10 @@ const revealObserver=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.
   const section=document.querySelector('[data-testimonial-v32]'); if(!section)return;
   const track=section.querySelector('[data-t32-track]'); const cards=[...track.children];
   const stage=section.querySelector('.testimonial-v32-stage'); const progress=section.querySelector('[data-t32-progress]');
-  let frame = 0;
+  let frame = 0, nearby = false;
   function render(){
     frame = 0;
+    if(!nearby)return;
     if(innerWidth<=980){track.style.transform='';return;}
     const r=section.getBoundingClientRect(), vh=innerHeight;
     if(r.top >= vh || r.bottom <= 0)return;
@@ -538,8 +562,9 @@ const revealObserver=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.
     track.style.transform=`translate3d(${-max*hp}px,0,0)`;
     if(progress)progress.style.transform=`scaleX(${hp})`;
   }
-  const request = () => { if(!frame) frame=requestAnimationFrame(render); };
-  addEventListener('scroll',request,{passive:true}); addEventListener('resize',request); render();
+  const request = () => { if(nearby&&!frame) frame=requestAnimationFrame(render); };
+  new IntersectionObserver(entries=>{nearby=entries[0].isIntersecting;request();},{rootMargin:'200px 0px'}).observe(section);
+  addEventListener('scroll',request,{passive:true}); addEventListener('resize',request);
 })();
 
 // V32 insight reveal
@@ -599,17 +624,29 @@ const revealObserver=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.
 })();
 
 
-/* Keep hero background video continuously looping */
+/* Run decorative video only while it can actually be seen. */
 (()=>{
   const video=document.querySelector('.hero-video');
-  if(!video) return;
-  video.loop=true;
-  video.muted=true;
-  video.playsInline=true;
-  video.addEventListener('ended',()=>{video.currentTime=0;video.play().catch(()=>{});});
-  const ensurePlay=()=>{if(video.paused) video.play().catch(()=>{});};
-  window.addEventListener('pageshow',ensurePlay);
-  document.addEventListener('visibilitychange',()=>{if(!document.hidden) ensurePlay();});
+  if(!video)return;
+  video.loop=true;video.muted=true;video.playsInline=true;
+  let visible=false;
+  function sync(){
+    if(visible&&!document.hidden){if(video.paused)video.play().catch(()=>{});}
+    else video.pause();
+  }
+  new IntersectionObserver(entries=>{visible=entries[0].isIntersecting;sync();}).observe(video);
+  window.addEventListener('pageshow',sync);
+  document.addEventListener('visibilitychange',sync);
+})();
+
+/* Pause offscreen decorative CSS motion on the homepage. */
+(()=>{
+  if(!document.querySelector('[data-portfolio-scroll]'))return;
+  document.body.classList.add('home-motion-managed');
+  const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{
+    entry.target.classList.toggle('is-motion-offscreen',!entry.isIntersecting);
+  }),{rootMargin:'100px 0px'});
+  document.querySelectorAll('main > section').forEach(section=>observer.observe(section));
 })();
 
 // Inner page reveal animations
