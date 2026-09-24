@@ -62,7 +62,7 @@
       const controller = new AbortController();
       const timeout = setTimeout(() => controller.abort(), 30000);
       try {
-        const response = await fetch('/api/contact', {
+        const response = await fetch(form.getAttribute('action') || 'send.php', {
           method: 'POST', headers: {'Content-Type': 'application/json'},
           body: JSON.stringify(payload), signal: controller.signal
         });
@@ -70,6 +70,7 @@
         if (!response.ok || data.ok !== true) throw new Error(data.error || 'We could not confirm sending. Please try again or use the email link below.');
         result.textContent = 'Thank you. Your enquiry has been sent to our team. We’ll be in touch soon.';
         form.reset();
+        window.location.assign('thank-you.html');
       } catch (error) {
         const message = document.createElement('p');
         message.textContent = error.name === 'AbortError'

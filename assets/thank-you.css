@@ -1,0 +1,45 @@
+.thank-you-page{background:#f7f6f2;color:#151515}
+.thank-you-page .site-header{background:rgba(255,255,255,.97)!important;border-bottom:1px solid #e5e3dd!important}
+.thank-you-page .site-header .desktop-nav a{color:#171717!important}
+.thank-you-page .site-header .brand img{filter:none!important}
+.thank-you-page .site-header .header-icon-link{color:#171717!important;border-color:#ddd!important}
+.thank-you-page .site-header .header-icon-link svg{stroke:#171717!important}
+.thank-you-page .site-header .menu-toggle span{background:#171717!important}
+.thank-you-page main{padding-top:92px}
+.thanks-shell{width:min(1280px,calc(100% - 112px));margin-inline:auto}
+.thanks-hero{display:grid;grid-template-columns:1.25fr 1fr;gap:clamp(40px,6vw,100px);align-items:center;padding:80px 0 68px}
+.thanks-status{display:inline-flex;align-items:center;gap:9px;padding:8px 12px;border:1px solid #ddd5cd;border-radius:100px;font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#9c2026}
+.thanks-status svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2}
+.thanks-copy h1{font:600 clamp(54px,5.8vw,84px)/1.02 Manrope,Inter,sans-serif;letter-spacing:-.06em;margin:27px 0 24px}
+.thanks-copy h1 span{color:#c2272e}
+.thanks-copy>p{max-width:490px;font:400 17px/1.8 Inter,sans-serif;color:#67635e;margin:0 0 28px}
+.thanks-actions{display:flex;flex-wrap:wrap;gap:12px}
+.thanks-button{display:inline-flex;align-items:center;justify-content:center;gap:22px;min-height:52px;padding:14px 23px;border:1px solid #d8d4cd;border-radius:100px;font:600 13px Inter,sans-serif;color:#191919;text-decoration:none}
+.thanks-button.primary{background:#c2272e;color:#fff;border-color:#c2272e}
+.thanks-button svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.6}
+.thanks-button:hover{background:#ece8e1}
+.thanks-button.primary:hover{background:#a81922}
+.thanks-copy .thanks-contact{margin:28px 0 0;font-size:12px;color:#76716b}
+.thanks-contact a{color:#272522;text-decoration:underline;text-underline-offset:4px}
+.thanks-art{position:relative;isolation:isolate;min-width:0;padding:30px;aspect-ratio:1/1.04;border-radius:24px;overflow:hidden;color:#fff;background:radial-gradient(ellipse at 95% 0,#e94142 0,#ad1723 42%,#360e15 100%)}
+.thanks-art::before{content:"";position:absolute;inset:0;z-index:-1;background-image:linear-gradient(#ffffff0b 1px,transparent 1px),linear-gradient(90deg,#ffffff0b 1px,transparent 1px);background-size:42px 42px}
+.thanks-art-top{display:flex;justify-content:space-between;font-size:10px;font-weight:500;letter-spacing:.16em;color:#ffffffb8}
+.thanks-illustration{display:block;width:100%;height:auto;margin:17px auto 8px;max-width:360px}
+.thanks-art-bottom{display:flex;justify-content:space-between;align-items:end;gap:20px;border-top:1px solid #ffffff35;padding-top:21px}
+.thanks-art-bottom strong{font:500 clamp(22px,2.3vw,34px)/1.1 Manrope,sans-serif;letter-spacing:-.035em}
+.thanks-art-bottom span{font-size:10px;letter-spacing:.06em;color:#ffffffb8;line-height:1.6;text-align:right}
+.thanks-next{padding-bottom:80px}
+.thanks-next>h2{font-size:12px;font-weight:600;letter-spacing:.13em;text-transform:uppercase;margin:0 0 24px;color:#77716b}
+.thanks-steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid #ddd7ce}
+.thanks-step{padding:28px 30px 0 0}
+.thanks-step+.thanks-step{border-left:1px solid #ddd7ce;padding-left:30px}
+.thanks-step>span{display:block;font:500 36px/1.1 Manrope,sans-serif;color:#c2272e55;letter-spacing:-.05em;margin-bottom:16px}
+.thanks-step h3{font:600 20px/1.2 Manrope,sans-serif;letter-spacing:-.035em;margin:0 0 10px}
+.thanks-step p{max-width:300px;font-size:14px;line-height:1.7;color:#77716b;margin:0}
+.thank-you-page a:focus-visible,.thank-you-page button:focus-visible{outline:2px solid #c2272e;outline-offset:5px}
+.thank-you-page .skip-content{position:fixed;top:8px;left:8px;z-index:10001;padding:12px 18px;background:#fff;color:#111;transform:translateY(-150%)}
+.thank-you-page .skip-content:focus{transform:none}
+.thank-you-page .thanks-copy h1 br{display:block!important}
+@media(max-width:700px){.thank-you-page .thanks-copy h1{font-size:clamp(46px,12vw,68px)!important;line-height:1.06!important}}
+@media(max-width:1000px){.thanks-shell{width:calc(100% - 56px)}.thanks-hero{gap:32px;padding-top:55px}.thanks-art{padding:23px}.thanks-copy h1{font-size:clamp(44px,6vw,64px)}.thanks-copy>p{font-size:15px}}
+@media(max-width:700px){.thank-you-page main{padding-top:68px}.thanks-shell{width:calc(100% - 40px)}.thanks-hero{grid-template-columns:1fr;gap:36px;padding:40px 0}.thanks-copy h1{font-size:clamp(48px,12vw,68px);margin:24px 0 20px}.thanks-copy>p{font-size:16px}.thanks-actions{gap:10px}.thanks-button{gap:15px;padding:14px 20px}.thanks-art{max-width:440px;width:100%;margin-inline:auto;aspect-ratio:auto;padding:26px}.thanks-illustration{max-width:300px;margin-block:5px}.thanks-art-bottom strong{font-size:30px}.thanks-next{padding-bottom:50px}.thanks-steps{grid-template-columns:1fr}.thanks-step,.thanks-step+.thanks-step{padding:23px 0;border-left:0;border-bottom:1px solid #ddd7ce}.thanks-step>span{float:left;width:57px;margin-top:2px}.thanks-step h3,.thanks-step p{margin-left:57px}.thanks-step p{max-width:none}.thanks-copy .thanks-contact{font-size:12px}}

@@ -1,8 +1,5 @@
 {
   "name": "huco-digital",
   "version": "1.0.0",
-  "private": true,
-  "dependencies": {
-    "nodemailer": "10.0.10"
-  }
+  "private": true
 }
