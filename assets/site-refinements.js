@@ -1,4 +1,4 @@
-/* Shared editorial controls and honest email-based enquiries. */
+/* Shared editorial controls and server-delivered enquiries. */
 (() => {
   const cards = [...document.querySelectorAll('[data-insight-card]')];
   const filters = [...document.querySelectorAll('[data-insight-filter]')];
@@ -34,40 +34,58 @@
         label.htmlFor = control.id;
       }
     });
-    form.addEventListener('submit', event => {
+    const trap = document.createElement('input');
+    trap.name = 'website'; trap.type = 'text'; trap.tabIndex = -1;
+    trap.autocomplete = 'off'; trap.setAttribute('aria-hidden', 'true');
+    trap.style.cssText = 'position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden';
+    form.append(trap);
+    let sending = false;
+    form.addEventListener('submit', async event => {
       event.preventDefault();
-      if (!form.reportValidity()) return;
-      const lines = controls.filter(control => control.name && control.value.trim()).map(control => {
-        const labelElement = control.labels?.[0];
-        const label = (labelElement?.querySelector('span') || labelElement)?.textContent.trim() || control.name;
-        return `${label}: ${control.value.trim()}`;
-      });
-      const company = form.elements.namedItem('company')?.value.trim();
-      const subject = `HUCO project enquiry${company ? ` — ${company}` : ''}`;
-      const body = `Hello HUCO team,\n\nI would like to discuss a project.\n\n${lines.join('\n\n')}\n\nEnquiry from: ${document.title}`;
+      if (sending || !form.reportValidity()) return;
+      const payload = Object.fromEntries(controls.filter(control => control.name).map(control => [control.name, control.value.trim()]));
+      payload.page = location.pathname;
+      payload.website = trap.value;
+      const button = form.querySelector('button[type="submit"], button:not([type])');
       let result = form.querySelector('.form-email-result');
       if (!result) {
         result = document.createElement('div');
         result.className = 'form-email-result';
         result.setAttribute('role', 'status');
+        result.setAttribute('aria-live', 'polite');
         form.append(result);
       }
-      result.replaceChildren();
-      const message = document.createElement('p');
-      message.textContent = 'Your email draft is ready. Open it in your email app and send it to hello@hucodigital.com to submit your brief.';
-      const link = document.createElement('a');
-      link.href = `mailto:hello@hucodigital.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-      link.textContent = 'Open email draft';
-      const icon = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-      icon.setAttribute('class', 'huco-icon');
-      icon.setAttribute('viewBox', '0 0 24 24');
-      icon.setAttribute('aria-hidden', 'true');
-      icon.setAttribute('focusable', 'false');
-      const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-      path.setAttribute('d', 'M6 18 18 6M6 6h12v12');
-      icon.append(path);
-      link.append(icon);
-      result.append(message, link);
+      result.textContent = 'Sending your enquiry…';
+      sending = true;
+      if (button) button.disabled = true;
+      form.setAttribute('aria-busy', 'true');
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 30000);
+      try {
+        const response = await fetch('/api/contact', {
+          method: 'POST', headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify(payload), signal: controller.signal
+        });
+        const data = await response.json().catch(() => ({}));
+        if (!response.ok || data.ok !== true) throw new Error(data.error || 'We could not confirm sending. Please try again or use the email link below.');
+        result.textContent = 'Thank you. Your enquiry has been sent to our team. We’ll be in touch soon.';
+        form.reset();
+      } catch (error) {
+        const message = document.createElement('p');
+        message.textContent = error.name === 'AbortError'
+          ? 'Sending took longer than expected. We could not confirm delivery. Your details are still here; you can contact us by email below.'
+          : (error instanceof TypeError ? 'We could not connect. Please check your connection or use the email link below.' : error.message);
+        const link = document.createElement('a');
+        const body = Object.entries(payload).filter(([key]) => key !== 'website').map(([key, value]) => `${key}: ${value}`).join('\n\n');
+        link.href = `mailto:arsalan@hucodigital.com?subject=${encodeURIComponent('HUCO website enquiry')}&body=${encodeURIComponent(body)}`;
+        link.textContent = 'Email your enquiry';
+        result.replaceChildren(message, link);
+      } finally {
+        clearTimeout(timeout);
+        sending = false;
+        if (button) button.disabled = false;
+        form.removeAttribute('aria-busy');
+      }
     });
   });
 })();

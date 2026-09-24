@@ -1,12 +1,18 @@
 /* Keep the existing scene and geometry; isolate its paint work while scrolling. */
 #work .portfolio-scroll-frame {isolation:isolate;contain:paint;}
 #work .portfolio-scroll-noise {transform:translateZ(0);}
-.home-motion-managed .is-motion-offscreen,
-.home-motion-managed .is-motion-offscreen *,
-.home-motion-managed .is-motion-offscreen::before,
-.home-motion-managed .is-motion-offscreen::after,
-.home-motion-managed .is-motion-offscreen *::before,
-.home-motion-managed .is-motion-offscreen *::after {animation-play-state:paused!important;}
+.is-motion-offscreen .live-btn::after,
+.is-motion-offscreen .about-support-card > span,
+.clients-showcase.is-motion-offscreen::after,
+.is-motion-offscreen .process-orbit::before,
+.is-motion-offscreen .process-orbit::after,
+.is-motion-offscreen .process-orbit span,
+.is-motion-offscreen .results-v32-signal span,
+.is-motion-offscreen .results-v32-signal b,
+.is-motion-offscreen .brief-v21-visual::after,
+.is-motion-offscreen .brief-v35-status i,
+.footer-v21.is-motion-offscreen::before,
+.footer-v21.is-motion-offscreen::after {animation-play-state:paused!important;}
 @media(min-width:1101px) and (prefers-reduced-motion:no-preference) {
   #work .portfolio-scroll-story.is-nearby .portfolio-scroll-frame {will-change:transform;}
   #work .portfolio-scroll-story.is-nearby .portfolio-scroll-slide {will-change:opacity;}

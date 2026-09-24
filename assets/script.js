@@ -17,7 +17,12 @@ const header=document.getElementById('header');const progress=document.getElemen
   window.addEventListener('load',measure,{once:true});
   measure();
 })();
-const revealObserver=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');else if(e.boundingClientRect.top>0)e.target.classList.remove('visible')}),{threshold:.12});document.querySelectorAll('.reveal').forEach(el=>revealObserver.observe(el));
+const revealObserver=new IntersectionObserver(entries=>entries.forEach(entry=>{
+  if(!entry.isIntersecting)return;
+  entry.target.classList.add('visible','is-visible');
+  revealObserver.unobserve(entry.target);
+}),{threshold:.12});
+document.querySelectorAll('.reveal').forEach(element=>revealObserver.observe(element));
 
 /* Optional legacy industries interaction. Guarded so newer industry layouts do not stop the rest of the site JS. */
 (() => {
@@ -454,6 +459,14 @@ const revealObserver=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.
   const stage = section.querySelector('.process-v30-stage');
   const playButton = section.querySelector('.process-autoplay');
   let active = -1, visible = false, paused = reducedMotion.matches, timer = 0;
+  let sectionTop=0, sectionHeight=1, railTravel=1;
+  function measureProcess() {
+    const rect=section.getBoundingClientRect();
+    sectionTop=rect.top+window.scrollY; sectionHeight=rect.height;
+    railTravel=Math.max(0,section.querySelector('.process-rail').clientHeight-110);
+    if(active>=0)progress.style.height=((active/(data.length-1))*railTravel)+'px';
+  }
+  measureProcess();
   function show(i) {
     i = (i + data.length) % data.length;
     if (i === active) return;
@@ -470,7 +483,7 @@ const revealObserver=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.
     screen.querySelector('ul').replaceChildren(...d[4].map(text => {
       const item = document.createElement('li'); item.textContent = text; return item;
     }));
-    progress.style.height = ((i / (data.length - 1)) * Math.max(0, section.querySelector('.process-rail').clientHeight - 110)) + 'px';
+    progress.style.height = ((i / (data.length - 1)) * railTravel) + 'px';
   }
   function schedule() {
     clearTimeout(timer);
@@ -499,14 +512,18 @@ const revealObserver=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.
   function onScroll() {
     scrollFrame=0;
     if (mobile.matches || !scrollNearby) return;
-    const r = section.getBoundingClientRect(), vh = innerHeight;
-    const start = vh * .55, end = -Math.max(180, r.height - vh * .7);
-    const fraction = Math.max(0, Math.min(1, (start - r.top) / (start - end)));
+    const top = sectionTop-window.scrollY, vh = innerHeight;
+    const start = vh * .55, end = -Math.max(180, sectionHeight - vh * .7);
+    const fraction = Math.max(0, Math.min(1, (start - top) / (start - end)));
     show(Math.round(fraction * (data.length - 1)));
   }
   const requestScroll=()=>{if(scrollNearby&&!scrollFrame)scrollFrame=requestAnimationFrame(onScroll);};
   new IntersectionObserver(entries=>{scrollNearby=entries[0].isIntersecting;requestScroll();},{rootMargin:'200px 0px'}).observe(section);
   addEventListener('scroll', requestScroll, {passive:true});
+  const resizeProcess=()=>{measureProcess();requestScroll();};
+  new ResizeObserver(resizeProcess).observe(document.body);
+  addEventListener('resize',resizeProcess,{passive:true});
+  document.fonts?.ready.then(resizeProcess);
   mobile.addEventListener('change', () => { schedule(); onScroll(); });
   reducedMotion.addEventListener('change', () => { paused = reducedMotion.matches; schedule(); });
   document.addEventListener('visibilitychange', schedule);
@@ -546,28 +563,39 @@ const revealObserver=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.
   const section=document.querySelector('[data-testimonial-v32]'); if(!section)return;
   const track=section.querySelector('[data-t32-track]'); const cards=[...track.children];
   const stage=section.querySelector('.testimonial-v32-stage'); const progress=section.querySelector('[data-t32-progress]');
-  let frame = 0, nearby = false;
+  let frame = 0, nearby = false, sectionTop=0, sectionHeight=1, max=0, total=1, lastRise=-1;
+  function measureTestimonials(){
+    sectionTop=section.getBoundingClientRect().top+window.scrollY;
+    sectionHeight=section.offsetHeight; total=Math.max(1,sectionHeight-innerHeight);
+    max=Math.max(0,track.scrollWidth-stage.clientWidth);
+    request();
+  }
   function render(){
     frame = 0;
     if(!nearby)return;
     if(innerWidth<=980){track.style.transform='';return;}
-    const r=section.getBoundingClientRect(), vh=innerHeight;
-    if(r.top >= vh || r.bottom <= 0)return;
-    const total=Math.max(1,section.offsetHeight-vh); const p=Math.max(0,Math.min(1,-r.top/total));
-    const max=Math.max(0,track.scrollWidth-stage.clientWidth);
+    const top=sectionTop-window.scrollY;
+    if(top >= innerHeight || top+sectionHeight <= 0)return;
+    const p=Math.max(0,Math.min(1,-top/total));
     const rise=Math.min(1,p/.14);
-    cards.forEach((c,i)=>{
+    if(rise!==lastRise)cards.forEach((c,i)=>{
       const d=i*.018, cp=Math.max(0,Math.min(1,(rise-d)/(1-d||1)));
       c.style.opacity=cp;
       c.style.transform=`translate3d(0,${(1-cp)*(72+i*5)}px,0) scale(${.965+cp*.035}) rotate(${(1-cp)*(i%2?1.2:-1.2)}deg)`;
     });
+    lastRise=rise;
     const hp=Math.max(0,Math.min(1,(p-.12)/.88));
     track.style.transform=`translate3d(${-max*hp}px,0,0)`;
     if(progress)progress.style.transform=`scaleX(${hp})`;
   }
   const request = () => { if(nearby&&!frame) frame=requestAnimationFrame(render); };
   new IntersectionObserver(entries=>{nearby=entries[0].isIntersecting;request();},{rootMargin:'200px 0px'}).observe(section);
-  addEventListener('scroll',request,{passive:true}); addEventListener('resize',request);
+  addEventListener('scroll',request,{passive:true});
+  addEventListener('resize',measureTestimonials,{passive:true});
+  new ResizeObserver(measureTestimonials).observe(document.body);
+  new ResizeObserver(measureTestimonials).observe(stage);
+  document.fonts?.ready.then(measureTestimonials);
+  measureTestimonials();
 })();
 
 // V32 insight reveal
@@ -642,24 +670,14 @@ const revealObserver=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.
   document.addEventListener('visibilitychange',sync);
 })();
 
-/* Pause offscreen decorative CSS motion on the homepage. */
+/* Pause offscreen decorative CSS motion, without stopping section entrances. */
 (()=>{
   if(!document.querySelector('[data-portfolio-scroll]'))return;
   document.body.classList.add('home-motion-managed');
   const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{
     entry.target.classList.toggle('is-motion-offscreen',!entry.isIntersecting);
   }),{rootMargin:'100px 0px'});
-  document.querySelectorAll('main > section').forEach(section=>observer.observe(section));
-})();
-
-// Inner page reveal animations
-(() => {
-  const els = document.querySelectorAll('.reveal');
-  if (!els.length) return;
-  const io = new IntersectionObserver(entries => entries.forEach(e => {
-    if (e.isIntersecting) { e.target.classList.add('is-visible'); io.unobserve(e.target); }
-  }), { threshold: .12 });
-  els.forEach(el => io.observe(el));
+  document.querySelectorAll('main > section, .footer-v21').forEach(section=>observer.observe(section));
 })();
 
 /* About V5 process: auto-playing workflow with manual control */
