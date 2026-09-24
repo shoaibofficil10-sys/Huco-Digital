@@ -9,11 +9,11 @@
 .home-motion-managed .is-motion-offscreen *::after {animation-play-state:paused!important;}
 @media(min-width:1101px) and (prefers-reduced-motion:no-preference) {
   #work .portfolio-scroll-story.is-nearby .portfolio-scroll-frame {will-change:transform;}
-  #work .portfolio-scroll-story.is-nearby .portfolio-scroll-slide {will-change:opacity,transform;}
+  #work .portfolio-scroll-story.is-nearby .portfolio-scroll-slide {will-change:opacity;}
   #work .portfolio-scroll-slide,
   #work .portfolio-scroll-slide.is-before,
-  #work .portfolio-scroll-slide.is-after {transition:opacity .28s ease-out,transform .36s cubic-bezier(.2,.8,.2,1),visibility 0s linear .28s!important;}
-  #work .portfolio-scroll-slide.is-active {transition:opacity .28s ease-out,transform .36s cubic-bezier(.2,.8,.2,1),visibility 0s!important;}
+  #work .portfolio-scroll-slide.is-after {transform:translateZ(0)!important;transition:opacity .18s ease-out,visibility 0s linear .18s!important;}
+  #work .portfolio-scroll-slide.is-active {transform:translateZ(0)!important;transition:opacity .18s ease-out,visibility 0s!important;}
 }
 @media(prefers-reduced-motion:reduce) {
   #work .portfolio-scroll-slide,

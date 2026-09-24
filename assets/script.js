@@ -217,8 +217,8 @@ const revealObserver=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.
     textAnimations = [];
     if (copy && !initial && !reducedMotion.matches) {
       textAnimations = [...copy.children].map(element => element.animate(
-        [{opacity:0, transform:'translateY(9px)'}, {opacity:1, transform:'none'}],
-        {duration:240, easing:'ease-out', fill:'both'}
+        [{opacity:0}, {opacity:1}],
+        {duration:160, easing:'ease-out', fill:'both'}
       ));
     }
   }
@@ -319,8 +319,11 @@ const revealObserver=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.
     story.classList.toggle('is-nearby', nearby);
     warmNearby();
     refreshGeometry();
-  }, {rootMargin:'1200px 0px'}).observe(story);
+  }, {rootMargin:'2200px 0px'}).observe(story);
   setActive(0, true);
+  const primeFirstSlide = () => warmSlide(0, 'low');
+  if ('requestIdleCallback' in window) window.requestIdleCallback(primeFirstSlide, {timeout:1600});
+  else setTimeout(primeFirstSlide, 600);
   requestUpdate();
 })();
 
