@@ -2,10 +2,10 @@ import * as THREE from './three-hero-core.mjs';
 
 // A two-bone sculpture: the upper neck/head rotates, the shoulders remain anchored.
 // Base scan: Infinite by Lee Perry-Smith, CC BY 3.0. See sculpture-credits.html.
-export async function mountCharacter(host) {
+export async function mountCharacter(host, { pixelRatio=1.6 }={}) {
   const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true, powerPreference: 'low-power' });
   renderer.setClearColor(0, 0);
-  renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 1.6));
+  renderer.setPixelRatio(Math.min(devicePixelRatio || 1, pixelRatio));
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.25;
   renderer.domElement.setAttribute('aria-hidden', 'true');
@@ -116,5 +116,5 @@ export async function mountCharacter(host) {
   host.appendChild(renderer.domElement);resize();
   const observer=new ResizeObserver(resize);observer.observe(host);
   host.classList.add('has-3d-character');
-  return {pose,destroy(){destroyed=true;observer.disconnect();environment.dispose();scene.traverse(o=>{o.geometry?.dispose();if(o.material) o.material.dispose();});renderer.dispose();renderer.domElement.remove();}};
+  return {pose,setQuality(ratio){renderer.setPixelRatio(Math.min(devicePixelRatio||1,ratio));resize();},destroy(){destroyed=true;observer.disconnect();environment.dispose();scene.traverse(o=>{o.geometry?.dispose();if(o.material) o.material.dispose();});renderer.dispose();renderer.domElement.remove();}};
 }
