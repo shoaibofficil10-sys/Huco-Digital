@@ -40,6 +40,20 @@ body.huco-home-theme .site-header .brand img { filter: brightness(0) !important;
 body.huco-home-theme .site-header :is(.brand, nav a, .header-icon-link) { color: #181818 !important; }
 body.huco-home-theme .site-header .header-icon-link { border-color: #d8d4d0 !important; }
 body.huco-home-theme .site-header .header-icon-link svg { stroke: currentColor !important; }
+body.huco-home-theme .site-header #menuToggle {
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 6px !important;
+  padding: 0 !important;
+  border-radius: 12px !important;
+}
+body.huco-home-theme .site-header #menuToggle span {
+  flex: 0 0 1px;
+  width: 20px !important;
+  height: 1px !important;
+  margin: 0 !important;
+}
 body.huco-home-theme .site-header .header-cta {
   background: var(--huco-accent) !important;
   color: #fff !important;
