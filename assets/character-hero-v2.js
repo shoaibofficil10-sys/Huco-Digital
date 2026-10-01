@@ -17,6 +17,7 @@
   }
   const request=()=>{if(!frame&&active()&&model)frame=requestAnimationFrame(render);};
   function sync(){
+    hero.classList.add('has-hero-motion');
     hero.classList.toggle('is-character-offscreen',!visible||document.hidden);
     hero.classList.toggle('is-motion-paused',paused||reduced.matches);
     if(!active()){cancel();return;}
@@ -43,9 +44,10 @@
   // The matching 34 KB poster paints first. No WebGL work for an offscreen hero,
   // touch-only devices or reduced motion. Once settled, pointer rendering stops.
   function loadModel(){
-    button.hidden=!fine.matches||reduced.matches;
+    // Ribbons also move on touch devices and with the static character fallback.
+    button.hidden=reduced.matches;
     if(started||!visible||!fine.matches||reduced.matches)return;
     started=true;
-    import('./character-sculpture.mjs?v=2').then(({mountCharacter})=>mountCharacter(host)).then(result=>{model=result;hero.dataset.characterMode='3d';sync();}).catch(()=>{hero.dataset.characterMode='image';button.hidden=true;});
+    import('./character-sculpture.mjs?v=2').then(({mountCharacter})=>mountCharacter(host)).then(result=>{model=result;hero.dataset.characterMode='3d';sync();}).catch(()=>{hero.dataset.characterMode='image';});
   }
 })();
