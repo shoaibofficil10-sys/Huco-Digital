@@ -2,15 +2,15 @@
   'use strict';
   const hero=document.querySelector('[data-character-hero]');
   if(!hero)return;
-  const host=hero.querySelector('[data-character-look]'), scene=hero.querySelector('.hk-scene'), button=hero.querySelector('[data-motion-toggle]');
+  const host=hero.querySelector('[data-character-look]'), scene=hero.querySelector('.hk-scene');
   const ribbons=[...hero.querySelectorAll('.hk-orbit')];
   let ribbonsRunning=false;
   ribbons.forEach(ribbon=>ribbon.pauseAnimations());
   const reduced=matchMedia('(prefers-reduced-motion: reduce)'),fine=matchMedia('(hover:hover) and (pointer:fine)');
   const ambient=matchMedia('(max-width: 800px), (pointer: coarse)');
-  let model=null,started=false,visible=false,sceneVisible=false,paused=false,frame=0,previous=0,ambientTime=0,x=0,y=0,tx=0,ty=0;
+  let model=null,started=false,visible=false,sceneVisible=false,frame=0,previous=0,ambientTime=0,x=0,y=0,tx=0,ty=0;
   let width=innerWidth,height=innerHeight;
-  const active=()=>visible&&sceneVisible&&!document.hidden&&!paused&&!reduced.matches;
+  const active=()=>visible&&sceneVisible&&!document.hidden&&!reduced.matches;
   const cancel=()=>{if(frame)cancelAnimationFrame(frame);frame=0;previous=0;};
   function render(now){
     frame=0;if(!active()||!model)return;
@@ -37,7 +37,7 @@
     hero.classList.add('has-hero-motion');
     hero.classList.toggle('is-character-offscreen',!visible||document.hidden);
     hero.classList.toggle('is-scene-offscreen',!sceneVisible);
-    hero.classList.toggle('is-motion-paused',paused||reduced.matches);
+    hero.classList.toggle('is-motion-paused',reduced.matches);
     hero.dataset.motionMode=ambient.matches?'ambient':'pointer';
     const runRibbons=active();
     if(runRibbons!==ribbonsRunning){
@@ -62,17 +62,10 @@
   new IntersectionObserver(entries=>{visible=entries[0].isIntersecting;loadModel();sync();},{threshold:0}).observe(hero);
   // Start the entrance when the artwork appears, not while mobile visitors read the copy.
   new IntersectionObserver(entries=>{sceneVisible=entries[0].isIntersecting;loadModel();sync();},{threshold:0}).observe(scene);
-  button.addEventListener('click',()=>{
-    paused=!paused;button.setAttribute('aria-pressed',String(paused));
-    button.setAttribute('aria-label',paused?'Resume hero animation':'Pause hero animation');
-    button.querySelector('[data-motion-label]').textContent=paused?'Resume motion':'Pause motion';
-    button.querySelector('path').setAttribute('d',paused?'M4 2l9 6-9 6z':'M4 2h3v12H4zM10 2h3v12h-3z');sync();
-  });
   // The small matching poster paints immediately; WebGL loads only for visible artwork.
   // Desktop renders on demand. Mobile uses a lower pixel ratio and a capped ambient loop.
   function loadModel(){
     // Ribbons also move on touch devices and with the static character fallback.
-    button.hidden=reduced.matches;
     if(started||!visible||!sceneVisible||reduced.matches)return;
     started=true;
     import('./character-sculpture.mjs?v=3').then(({mountCharacter})=>mountCharacter(host,{pixelRatio:ambient.matches?1:1.6})).then(result=>{model=result;hero.dataset.characterMode='3d';sync();}).catch(()=>{hero.dataset.characterMode='image';});
