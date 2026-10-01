@@ -137,12 +137,10 @@ body.huco-character-home .hk-description {
 .hk-spark-one { top: 24%; left: 9%; }
 .hk-spark-two { top: 59%; right: 8%; animation-delay: -2s; }
 .hk-scene::after { content: ''; position: absolute; z-index: 4; inset: auto 0 0; height: 70px; background: linear-gradient(transparent, #faf9f7); }
-.hk-scene-caption { position: absolute; z-index: 6; bottom: 91px; right: 0; display: flex; align-items: center; gap: 8px; color: #79716c; text-transform: uppercase; letter-spacing: .12em; font-size: 8px; pointer-events: none; }
-.hk-scene-caption i { width: 4px; height: 4px; border-radius: 50%; background: #cd2232; }
 .hk-motion-toggle {
   position: absolute;
   z-index: 8;
-  right: 0;
+  right: 66px;
   bottom: 36px;
   display: inline-flex;
   align-items: center;
@@ -161,7 +159,7 @@ body.huco-character-home .hk-description {
 .hk-motion-toggle:hover { border-color: #b95c63; color: #a21725; }
 .huco-kinetic-hero a:focus-visible, .hk-motion-toggle:focus-visible { outline: 2px solid #b81828; outline-offset: 5px; }
 .huco-kinetic-hero.is-motion-paused :is(.hk-bob, .hk-orbit, .hk-service, .hk-spark),
-.huco-kinetic-hero.is-motion-offscreen :is(.hk-bob, .hk-orbit, .hk-service, .hk-spark) { animation-play-state: paused; }
+.huco-kinetic-hero.is-character-offscreen :is(.hk-bob, .hk-orbit, .hk-service, .hk-spark) { animation-play-state: paused; }
 @keyframes hk-float { 0%,100% { transform: translate3d(0,0,0); } 50% { transform: translate3d(0,-9px,0); } }
 @keyframes hk-card { 0%,100% { transform: translate3d(0,0,0); } 50% { transform: translate3d(0,-6px,0); } }
 @keyframes hk-orbit { from { transform: translate3d(0,-3px,0) rotate(-.6deg); } to { transform: translate3d(0,4px,0) rotate(.6deg); } }
@@ -200,8 +198,7 @@ body.huco-character-home .hk-description {
   .hk-service-two { top: 34%; right: 1%; }
   .hk-service-three { top: 60%; right: 4%; }
   .hk-project { bottom: 23px; width: 264px; }
-  .hk-scene-caption { display: none; }
-  .hk-motion-toggle { bottom: 39px; font-size: 0; width: 34px; height: 34px; min-height: 34px; justify-content: center; padding: 9px; }
+  .hk-motion-toggle { top: 103px; right: 0; bottom: auto; font-size: 0; width: 34px; height: 34px; min-height: 34px; justify-content: center; padding: 9px; }
   .hk-motion-toggle svg { flex: 0 0 12px; width: 12px; }
 }
 @media (max-width: 450px) {
@@ -235,5 +232,5 @@ body.huco-character-home .hk-description {
 @media (prefers-reduced-motion: reduce) {
   .huco-kinetic-hero *, .huco-kinetic-hero *::before, .huco-kinetic-hero *::after { animation: none !important; transition: none !important; }
   .hk-look { transform: none !important; }
-  .hk-motion-toggle, .hk-scene-caption { display: none; }
+  .hk-motion-toggle { display: none; }
 }

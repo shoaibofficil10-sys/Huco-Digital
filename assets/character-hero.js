@@ -28,7 +28,7 @@
   }
   function request() { if (!frame && active() && finePointer.matches) frame = requestAnimationFrame(render); }
   function sync() {
-    hero.classList.toggle('is-motion-offscreen', !visible || document.hidden);
+    hero.classList.toggle('is-character-offscreen', !visible || document.hidden);
     hero.classList.toggle('is-motion-paused', paused || reduced.matches);
     if (!active() || !finePointer.matches) reset();
   }
