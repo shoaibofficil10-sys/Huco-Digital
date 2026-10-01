@@ -693,7 +693,7 @@ document.querySelectorAll('.reveal').forEach(element=>revealObserver.observe(ele
   const tags = root.querySelector('[data-process-tags]');
   const copy = root.querySelector('.process-v4-copy');
   const data = [
-    ['DISCOVER','Understand your business goals.','Your audience, current marketing, project requirements, budget and success measures.',['Audit','Research','Signals']],
+    ['DISCOVER','Understand your business goals.','Your audience, marketing, requirements, budget and success measures.',['Audit','Research','Signals']],
     ['DEFINE','Agree the scope and delivery plan.','Services, deliverables, creative direction, timeline and approval stages agreed with your team.',['Strategy','Journey','Plan']],
     ['DELIVER','Create, review and launch your project.','Our team produces the content, builds the website or launches the campaign, with agreed checks.',['Create','Build','Launch']],
     ['IMPROVE','Review the results and improve the work.','Campaign results, website data and your feedback help us decide which improvements to make next.',['Measure','Learn','Grow']]
