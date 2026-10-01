@@ -4,7 +4,7 @@
   if(!hero)return;
   const host=hero.querySelector('[data-character-look]'), button=hero.querySelector('[data-motion-toggle]');
   const reduced=matchMedia('(prefers-reduced-motion: reduce)'),fine=matchMedia('(hover:hover) and (pointer:fine)');
-  let model=null,visible=false,paused=false,frame=0,previous=0,x=0,y=0,tx=0,ty=0;
+  let model=null,started=false,visible=false,paused=false,frame=0,previous=0,x=0,y=0,tx=0,ty=0;
   let width=innerWidth,height=innerHeight;
   const active=()=>visible&&!document.hidden&&!paused&&!reduced.matches;
   const cancel=()=>{if(frame)cancelAnimationFrame(frame);frame=0;previous=0;};
@@ -31,15 +31,21 @@
   window.addEventListener('resize',()=>{width=innerWidth;height=innerHeight;},{passive:true});
   document.addEventListener('visibilitychange',sync);
   window.addEventListener('pagehide',cancel);window.addEventListener('pageshow',sync);
-  reduced.addEventListener('change',()=>{tx=ty=x=y=0;model?.pose(0,0);sync();});
-  fine.addEventListener('change',()=>{tx=ty=0;request();});
-  new IntersectionObserver(entries=>{visible=entries[0].isIntersecting;sync();},{threshold:0}).observe(hero);
+  reduced.addEventListener('change',()=>{tx=ty=x=y=0;model?.pose(0,0);loadModel();sync();});
+  fine.addEventListener('change',()=>{tx=ty=0;loadModel();request();});
+  new IntersectionObserver(entries=>{visible=entries[0].isIntersecting;loadModel();sync();},{threshold:0}).observe(hero);
   button.addEventListener('click',()=>{
     paused=!paused;button.setAttribute('aria-pressed',String(paused));
     button.setAttribute('aria-label',paused?'Resume hero animation':'Pause hero animation');
     button.querySelector('[data-motion-label]').textContent=paused?'Resume motion':'Pause motion';
     button.querySelector('path').setAttribute('d',paused?'M4 2l9 6-9 6z':'M4 2h3v12H4zM10 2h3v12h-3z');sync();
   });
-  // The image paints first; the WebGL module loads independently of the rest of the page.
-  import('./character-sculpture.mjs?v=2').then(({mountCharacter})=>mountCharacter(host)).then(result=>{model=result;hero.dataset.characterMode='3d';sync();}).catch(()=>{hero.dataset.characterMode='image';button.hidden=true;});
+  // The matching 34 KB poster paints first. No WebGL work for an offscreen hero,
+  // touch-only devices or reduced motion. Once settled, pointer rendering stops.
+  function loadModel(){
+    button.hidden=!fine.matches||reduced.matches;
+    if(started||!visible||!fine.matches||reduced.matches)return;
+    started=true;
+    import('./character-sculpture.mjs?v=2').then(({mountCharacter})=>mountCharacter(host)).then(result=>{model=result;hero.dataset.characterMode='3d';sync();}).catch(()=>{hero.dataset.characterMode='image';button.hidden=true;});
+  }
 })();
