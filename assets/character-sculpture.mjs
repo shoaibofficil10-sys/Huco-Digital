@@ -76,25 +76,27 @@ export async function mountCharacter(host) {
     const geo=new THREE.BufferGeometry();geo.setAttribute('position',new THREE.Float32BufferAttribute(p,3));geo.setAttribute('uv',new THREE.Float32BufferAttribute(uv,2));geo.setIndex(ind);geo.computeVertexNormals();
     const mesh=new THREE.Mesh(geo,material);accessories.add(mesh);return mesh;
   }
-  const glass=new THREE.MeshPhysicalMaterial({color:0x96081a,metalness:.45,roughness:.18,clearcoat:1,clearcoatRoughness:.1,emissive:0xc3152a,emissiveIntensity:.32,side:THREE.DoubleSide});
-  curvedBand(1.98,2.53,1.77,.95,-1.5,1.5,glass);
-  const edge=new THREE.MeshStandardMaterial({color:0xff8090,emissive:0xff163d,emissiveIntensity:1.8,metalness:.2,roughness:.25});
-  for(const y of [1.29,2.25]) {
-    const points=[];for(let i=0;i<=64;i++){const t=-1.5+3*i/64;points.push(new THREE.Vector3(Math.sin(t)*1.99,y,Math.cos(t)*2.54-.05));}
+  const glass=new THREE.MeshPhysicalMaterial({color:0x68091e,metalness:.4,roughness:.16,clearcoat:1,clearcoatRoughness:.1,emissive:0xe31835,emissiveIntensity:.48,side:THREE.DoubleSide});
+  curvedBand(1.83,2.42,1.77,.89,-1.5,1.5,graphite);
+  curvedBand(1.84,2.45,1.77,.75,-1.5,1.5,glass);
+  const visorLight=new THREE.PointLight(0xff163c,6,3,2);visorLight.position.set(0,1.15,2.5);accessories.add(visorLight);
+  const edge=new THREE.MeshStandardMaterial({color:0xef2949,emissive:0xf31032,emissiveIntensity:.85,metalness:.2,roughness:.25});
+  for(const y of [1.39,2.15]) {
+    const points=[];for(let i=0;i<=64;i++){const t=-1.5+3*i/64;points.push(new THREE.Vector3(Math.sin(t)*1.848,y,Math.cos(t)*2.46-.05));}
     accessories.add(new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(points),64,.019,5,false),edge));
   }
   const label=document.createElement('canvas');label.width=1024;label.height=256;
   const ctx=label.getContext('2d');ctx.clearRect(0,0,1024,256);ctx.fillStyle='#fff7f5';ctx.textAlign='center';ctx.textBaseline='middle';ctx.font='600 88px Arial, sans-serif';ctx.fillText('HUCO DIGITAL',512,132);
   const textTexture=new THREE.CanvasTexture(label);textTexture.colorSpace=THREE.SRGBColorSpace;
-  curvedBand(2.006,2.558,1.78,.73,-.87,.87,new THREE.MeshBasicMaterial({map:textTexture,transparent:true,depthWrite:false,side:THREE.DoubleSide,toneMapped:false}));
+  curvedBand(1.858,2.471,1.78,.62,-.87,.87,new THREE.MeshBasicMaterial({map:textTexture,transparent:true,depthWrite:false,side:THREE.DoubleSide,toneMapped:false}));
   // Fine sagittal fins give the sculpture its technical silhouette without covering the face.
   const finMat=new THREE.MeshPhysicalMaterial({color:0x25272c,metalness:.94,roughness:.24,clearcoat:.6});
   for(let i=0;i<9;i++) {
     const x=.65+i*.145, scale=1-i*.025;
     const shape=new THREE.Shape();
     shape.absellipse(0,0,1.83*scale,2.70*scale,0,Math.PI*2,false,0);
-    const hole=new THREE.Path();hole.absellipse(0,0,1.68*scale,2.52*scale,0,Math.PI*2,true,0);shape.holes.push(hole);
-    const fin=new THREE.Mesh(new THREE.ExtrudeGeometry(shape,{depth:.074,bevelEnabled:true,bevelSize:.015,bevelThickness:.012,bevelSegments:1,steps:1,curveSegments:56}),finMat);
+    
+    const fin=new THREE.Mesh(new THREE.ExtrudeGeometry(shape,{depth:.074,bevelEnabled:true,bevelSize:.025,bevelThickness:.025,bevelSegments:2,steps:1,curveSegments:56}),finMat);
     fin.rotation.y=Math.PI/2;fin.position.set(x,1.23,-.5);accessories.add(fin);
   }
 
