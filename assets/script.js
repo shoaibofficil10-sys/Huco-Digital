@@ -448,11 +448,11 @@ document.querySelectorAll('.reveal').forEach(element=>revealObserver.observe(ele
   const orbit=section.querySelector('.process-orbit b');
   const progress=section.querySelector('.process-progress');
   const data=[
-    ['01','UNDERSTAND','We find the real problem before making anything.','Business goals, audience, competitors, current performance and the friction stopping growth.',['Discovery','Research','Audit']],
-    ['02','DEFINE','We turn insight into one clear direction.','Positioning, channel priorities, user journeys and a practical plan that every discipline can work from.',['Strategy','Journey','Plan']],
-    ['03','CREATE','Design, content and technology move together.','Creative, web, production and campaign assets are built as one connected system rather than separate deliverables.',['Design','Build','Production']],
-    ['04','LAUNCH','We put the work in front of the right audience.','Campaign setup, tracking, QA and launch are handled with clear ownership and measurable goals.',['Launch','Media','Tracking']],
-    ['05','IMPROVE','Performance becomes the next creative brief.','We learn from data, improve weak points and keep iterating across content, media and digital experience.',['Optimise','Learn','Scale']]
+    ['01','UNDERSTAND','We start with your business and your customers.','We review your goals, audience, competitors and current marketing to identify what needs improving.',['Discovery','Research','Audit']],
+    ['02','DEFINE','We agree the scope, priorities and project plan.','We set the services, deliverables, timeline and success measures so you know exactly what the project covers.',['Strategy','Journey','Plan']],
+    ['03','CREATE','We create your campaigns, content and website.','Our specialists design, produce and develop the agreed work, with clear review stages for your feedback.',['Design','Build','Production']],
+    ['04','LAUNCH','We test the work and get everything ready to launch.','We check the website, creative, campaign settings and tracking before publishing the work to your customers.',['Launch','Media','Tracking']],
+    ['05','IMPROVE','We review results and plan the next improvements.','We use campaign data, customer feedback and website performance to improve the work and recommend next steps.',['Optimise','Learn','Scale']]
   ];
   const mobile = matchMedia('(max-width:980px)');
   const reducedMotion = matchMedia('(prefers-reduced-motion:reduce)');
@@ -693,10 +693,10 @@ document.querySelectorAll('.reveal').forEach(element=>revealObserver.observe(ele
   const tags = root.querySelector('[data-process-tags]');
   const copy = root.querySelector('.process-v4-copy');
   const data = [
-    ['DISCOVER','Understand what needs to change.','Business goal, audience, current data, constraints and success criteria.',['Audit','Research','Signals']],
-    ['DEFINE','Turn the problem into a focused direction.','Scope, channel mix, creative direction, technical plan and the milestones that matter.',['Strategy','Journey','Plan']],
-    ['DELIVER','Make and launch as one connected workflow.','Production, design, development, QA, approvals and launch coordination move together.',['Create','Build','Launch']],
-    ['IMPROVE','Use evidence to choose the next move.','Performance review, friction analysis, learning and prioritised iteration feed the next cycle.',['Measure','Learn','Grow']]
+    ['DISCOVER','Understand your business goals.','Your audience, current marketing, project requirements, budget and success measures.',['Audit','Research','Signals']],
+    ['DEFINE','Agree the scope and delivery plan.','Services, deliverables, creative direction, timeline and approval stages agreed with your team.',['Strategy','Journey','Plan']],
+    ['DELIVER','Create, review and launch your project.','Our team produces the content, builds the website or launches the campaign, with agreed checks.',['Create','Build','Launch']],
+    ['IMPROVE','Review the results and improve the work.','Campaign results, website data and your feedback help us decide which improvements to make next.',['Measure','Learn','Grow']]
   ];
   let index = 0, timer = null, inView = false;
   const activate = (i) => {
