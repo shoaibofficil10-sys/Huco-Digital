@@ -2,10 +2,9 @@ import * as THREE from './three-hero-core.mjs';
 
 // A two-bone sculpture: the upper neck/head rotates, the shoulders remain anchored.
 // Base scan: Infinite by Lee Perry-Smith, CC BY 3.0. See sculpture-credits.html.
-export async function mountCharacter(host, { pixelRatio=1.6 }={}) {
+export async function mountCharacter(host, { pixelRatio=2, maxPixels=2400000 }={}) {
   const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true, powerPreference: 'low-power' });
   renderer.setClearColor(0, 0);
-  renderer.setPixelRatio(Math.min(devicePixelRatio || 1, pixelRatio));
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.25;
   renderer.domElement.setAttribute('aria-hidden', 'true');
@@ -67,7 +66,7 @@ export async function mountCharacter(host, { pixelRatio=1.6 }={}) {
   const accessories=new THREE.Group(); accessories.position.y=1.2; head.add(accessories);
 
   function curvedBand(radiusX, radiusZ, y, height, start, end, material) {
-    const p=[],uv=[],ind=[],segments=64;
+    const p=[],uv=[],ind=[],segments=96;
     for(let i=0;i<=segments;i++){
       const t=start+(end-start)*i/segments;
       for(let j=0;j<2;j++) {p.push(Math.sin(t)*radiusX,y+(j-.5)*height,Math.cos(t)*radiusZ-.05);uv.push(i/segments,j);}
@@ -82,12 +81,13 @@ export async function mountCharacter(host, { pixelRatio=1.6 }={}) {
   const visorLight=new THREE.PointLight(0xff163c,6,3,2);visorLight.position.set(0,1.15,2.5);accessories.add(visorLight);
   const edge=new THREE.MeshStandardMaterial({color:0xef2949,emissive:0xf31032,emissiveIntensity:.85,metalness:.2,roughness:.25});
   for(const y of [1.39,2.15]) {
-    const points=[];for(let i=0;i<=64;i++){const t=-1.5+3*i/64;points.push(new THREE.Vector3(Math.sin(t)*1.848,y,Math.cos(t)*2.46-.05));}
-    accessories.add(new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(points),64,.019,5,false),edge));
+    const points=[];for(let i=0;i<=96;i++){const t=-1.5+3*i/96;points.push(new THREE.Vector3(Math.sin(t)*1.848,y,Math.cos(t)*2.46-.05));}
+    accessories.add(new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(points),96,.019,8,false),edge));
   }
   const label=document.createElement('canvas');label.width=1024;label.height=256;
   const ctx=label.getContext('2d');ctx.clearRect(0,0,1024,256);ctx.fillStyle='#fff7f5';ctx.textAlign='center';ctx.textBaseline='middle';ctx.font='600 88px Arial, sans-serif';ctx.fillText('HUCO DIGITAL',512,132);
   const textTexture=new THREE.CanvasTexture(label);textTexture.colorSpace=THREE.SRGBColorSpace;
+  textTexture.anisotropy=Math.min(4,renderer.capabilities.getMaxAnisotropy());
   curvedBand(1.858,2.471,1.78,.62,-.87,.87,new THREE.MeshBasicMaterial({map:textTexture,transparent:true,depthWrite:false,side:THREE.DoubleSide,toneMapped:false}));
   // Fine sagittal fins give the sculpture its technical silhouette without covering the face.
   const finMat=new THREE.MeshPhysicalMaterial({color:0x25272c,metalness:.94,roughness:.24,clearcoat:.6});
@@ -96,12 +96,13 @@ export async function mountCharacter(host, { pixelRatio=1.6 }={}) {
     const shape=new THREE.Shape();
     shape.absellipse(0,0,1.83*scale,2.70*scale,0,Math.PI*2,false,0);
     
-    const fin=new THREE.Mesh(new THREE.ExtrudeGeometry(shape,{depth:.074,bevelEnabled:true,bevelSize:.025,bevelThickness:.025,bevelSegments:2,steps:1,curveSegments:56}),finMat);
+    const fin=new THREE.Mesh(new THREE.ExtrudeGeometry(shape,{depth:.074,bevelEnabled:true,bevelSize:.025,bevelThickness:.025,bevelSegments:3,steps:1,curveSegments:80}),finMat);
     fin.rotation.y=Math.PI/2;fin.position.set(x,1.23,-.5);accessories.add(fin);
   }
 
-  let destroyed=false;
+  let destroyed=false,lastX=0,lastY=0;
   const pose=(x,y)=>{
+    lastX=x;lastY=y;
     head.rotation.set(-.08+y*.19,-.23+x*.38, -x*.025, 'YXZ');
     renderer.render(scene,camera);
     host.dataset.headYaw=head.rotation.y.toFixed(3);
@@ -111,10 +112,15 @@ export async function mountCharacter(host, { pixelRatio=1.6 }={}) {
     if(destroyed)return;
     const width=host.clientWidth,height=host.clientHeight;
     if(!width||!height)return;
-    renderer.setSize(width,height,false);camera.aspect=width/height;camera.updateProjectionMatrix();pose(0,0);
+    // Supersampling softens silhouettes, including on 1x screens. Bound the
+    // drawing buffer so large desktop canvases cannot multiply the GPU cost.
+    const scale=Math.min(pixelRatio,Math.max(1.5,devicePixelRatio||1),Math.sqrt(maxPixels/(width*height)));
+    renderer.setPixelRatio(scale);
+    renderer.setSize(width,height,false);camera.aspect=width/height;camera.updateProjectionMatrix();pose(lastX,lastY);
+    host.dataset.renderScale=scale.toFixed(2);
   }
   host.appendChild(renderer.domElement);resize();
   const observer=new ResizeObserver(resize);observer.observe(host);
   host.classList.add('has-3d-character');
-  return {pose,setQuality(ratio){renderer.setPixelRatio(Math.min(devicePixelRatio||1,ratio));resize();},destroy(){destroyed=true;observer.disconnect();environment.dispose();scene.traverse(o=>{o.geometry?.dispose();if(o.material) o.material.dispose();});renderer.dispose();renderer.domElement.remove();}};
+  return {pose,setQuality(ratio){pixelRatio=ratio;resize();},destroy(){destroyed=true;observer.disconnect();environment.dispose();scene.traverse(o=>{o.geometry?.dispose();if(o.material) o.material.dispose();});renderer.dispose();renderer.domElement.remove();}};
 }
